@@ -10,7 +10,8 @@ last_name: Falck
 superuser: true
 
 # Role/position/tagline
-role: PhD student in <br/><br/> Statistical Machine Learning
+role: PhD student in\
+ Statistical Machine Learning
 
 # Organizations/Affiliations to show in About widget
 organizations:
