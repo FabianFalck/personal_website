@@ -103,8 +103,7 @@ Recently, I worked on analysing the regularisation property of U-Nets, which are
 and a [variational autoencoder for clustering to find multiple partitions of high-dimensional data](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) (NeurIPS 2021).   
 
 Before joining Oxford, I worked with [Prof. Andrew Davison](https://www.doc.ic.ac.uk/~ajd/) on research in computer vision and robotics at the [Dyson Robotics Lab](https://www.imperial.ac.uk/dyson-robotics-lab/), and [with Dr. Petar Kormushev](https://www.imperial.ac.uk/people/p.kormushev) at the [Robot Intelligence Lab](https://www.imperial.ac.uk/robot-intelligence/) both at Imperial College London, 
-and with [Prof. Artur Dubrawski](https://www.ri.cmu.edu/ri-faculty/artur-w-dubrawski/) on machine learning for health at the [Auton Lab](https://autonlab.org/) at [Carnegie Mellon University](https://www.cmu.edu/).  
-Selected publications are on
+and with [Prof. Artur Dubrawski](https://www.ri.cmu.edu/ri-faculty/artur-w-dubrawski/) on machine learning for health at the [Auton Lab](https://autonlab.org/) at [Carnegie Mellon University](https://www.cmu.edu/). Selected publications are on
 a [comparison of view-based and map-based semantic labelling in real-time SLAM systems](https://arxiv.org/abs/2002.10342) (ICRA 2020),
 an [exoskeleton for teleoperation called DE VITO](https://link.springer.com/book/10.1007/978-3-030-23807-0) (TAROS 2019 (the UK's largest robotics conference), Best Paper Award), 
 a [software architecture and play fetch demo for Robot DE NIRO](https://www.frontiersin.org/articles/10.3389/frobt.2020.00066/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field&journalName=Frontiers_in_Robotics_and_AI&id=466867)  (journal Frontiers in Robotics and AI; IROS workshop (spotlight)) 
