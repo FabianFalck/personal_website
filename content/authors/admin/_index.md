@@ -56,7 +56,7 @@ social:
     link: https://twitter.com/fabianfalck
     label: Follow me on Twitter
     display:
-      header: true
+      header: false
   - icon: linkedin
     icon_pack: fab
     link: https://www.linkedin.com/in/fabian-falck/
