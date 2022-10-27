@@ -21,7 +21,7 @@ organizations:
 bio: My research interest lies in probabilistic deep learning, generative modelling, causal inference, and applications in health. 
 
 # Interests to show in About widget
-Research interests:
+interests:
   - Probabilistic Deep Learning
   - Generative Modelling
   - Causal Inference
