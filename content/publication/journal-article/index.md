@@ -1,4 +1,6 @@
 ---
+active: false
+
 title: "An example journal article"
 authors:
 - admin
