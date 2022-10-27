@@ -117,7 +117,7 @@ the University of Oxford, Singapore Management University, and Carnegie Mellon U
 I play the guitar, enjoy singing and racket sports.
 I speak English, German and Chinese. 
 
-Contact: fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk
+Contact: ***fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk***
 
 
 
