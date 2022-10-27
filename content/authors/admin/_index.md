@@ -21,7 +21,7 @@ organizations:
 bio: My research interest lies in probabilistic deep learning, generative modelling, causal inference, and applications in health. 
 
 # Interests to show in About widget
-interests:
+Research interests:
   - Probabilistic Deep Learning
   - Generative Modelling
   - Causal Inference
@@ -84,6 +84,9 @@ email: ''
 
 # Highlight the author in author lists? (true/false)
 highlight_name: true
+
+
+# {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
 ---
 
 Hi and welcome! I am Fabian - great to have you here!
@@ -119,4 +122,4 @@ Contact:
 fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk
 
 
-# {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
+
