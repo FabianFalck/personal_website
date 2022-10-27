@@ -33,7 +33,7 @@ education:
   courses:
     - course: PhD in Statistical Machine Learning
       institution: University of Oxford
-      year: 2024
+      year: 2024 (expected)
     - course: MSc in Computer Science
       institution: Imperial College London
       year: 2018
