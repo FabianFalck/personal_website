@@ -38,7 +38,7 @@ education:
       year: 2018
     - course: BSc+MSc in Engineering
       institution: Karlsruhe Institute of Technology
-      year: 2015,2016
+      year: 2015+2016
 
 # Social/Academic Networking
 # For available icons, see: https://wowchemy.com/docs/getting-started/page-builder/#icons
@@ -117,9 +117,7 @@ the University of Oxford, Singapore Management University, and Carnegie Mellon U
 I play the guitar, enjoy singing and racket sports.
 I speak English, German and Chinese. 
 
-Contact: 
-
-fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk
+Contact: fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk
 
 
 
