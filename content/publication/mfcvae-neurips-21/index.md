@@ -17,7 +17,7 @@ author_notes:
   - 'Equal contribution'
   - 'Equal contribution'
 
-date: '2022-02-01T00:00:00Z'
+date: '2021-12-01T00:00:00Z'
 doi: ''
 
 # Schedule page publish date (NOT publication's date).
@@ -44,9 +44,11 @@ tags: []
 featured: false
 
 # Custom links (uncomment lines below)
-# links:
-# - name: Custom Link
-#   url: http://example.org
+links:
+- name: Paper
+       url: https://arxiv.org/abs/2106.05241
+- code: Code
+    code: https://github.com/FabianFalck/mfcvae
 
 url_pdf: ''
 url_code: ''
