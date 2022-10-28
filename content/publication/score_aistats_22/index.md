@@ -12,9 +12,7 @@ authors:
   - Chris Holmes
 
 # Author notes (optional)
-# author_notes:
-#   - 'Equal contribution'
-#   - 'Equal contribution'
+author_notes:
 
 date: '2022-02-01T00:00:00Z'
 doi: ''
