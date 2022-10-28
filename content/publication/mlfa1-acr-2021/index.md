@@ -6,7 +6,7 @@ title: 'Identification of Underlying Disease Domains by Longitudinal Latent Fact
 # and it will be replaced with their full name and linked to their profile.
 authors:
   - Xuan Zhu
-  - admin~~~~
+  - admin
   - Sahra Ghalebikesabi
   - Matthias Kormaksson
   - Marc Vandemeulebroecke
