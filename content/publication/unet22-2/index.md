@@ -1,5 +1,5 @@
 ---
-title: 'A Multi-Resolution Framework for U-Nets with Applications to Hierarchical VAEs'
+title: 'A Multi-Resolution Framework for U-Nets with Applications to Hierarchical VAEs - change 2'
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
