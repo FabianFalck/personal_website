@@ -45,13 +45,13 @@ featured: false
 
 # Custom links (uncomment lines below)
 links:
-- name: Paper
-  url: https://arxiv.org/abs/2106.05241
-- code: Code
-  code: https://github.com/FabianFalck/mfcvae
+# - name: Paper
+#   url: 
+# - code: Code
+#   code: 
 
-url_pdf: ''
-url_code: ''
+url_pdf: 'https://arxiv.org/abs/2106.05241'
+url_code: 'https://github.com/FabianFalck/mfcvae'
 url_dataset: ''
 url_poster: ''
 url_project: ''
