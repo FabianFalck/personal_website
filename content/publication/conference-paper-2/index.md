@@ -1,12 +1,18 @@
 ---
-title: 'An example conference paper 2222'
+title: 'A Multi-Resolution Framework for U-Nets with Applications to Hierarchical VAEs'
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
 # and it will be replaced with their full name and linked to their profile.
 authors:
   - admin
-  - Robert Ford
+  - Christopher Williams
+  - Dominic Danks
+  - George Deligiannidis
+  - Christopher Yau
+  - Chris Holmes
+  - Arnaud Doucet
+  - Matthew Willetts
 
 # Author notes (optional)
 author_notes:
