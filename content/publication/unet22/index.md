@@ -43,7 +43,7 @@ publication_short: NeurIPS 2022 (***oral***; to appear)
 tags: []
 
 # Display this page in the Featured widget?
-featured: true
+featured: false
 
 # Custom links (uncomment lines below)
 # links:
