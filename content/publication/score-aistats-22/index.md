@@ -42,11 +42,11 @@ featured: false
 
 # Custom links (uncomment lines below)
 # links:
-- name: Custom Link
-  url: http://example.org
+# - name: Custom Link
+#   url: http://example.org
 
-url_pdf: ''
-url_code: ''
+url_pdf: 'https://arxiv.org/abs/2203.00554'
+url_code: 'https://github.com/oscarclivio/neuralscorematching'
 url_dataset: ''
 url_poster: ''
 url_project: ''
