@@ -46,9 +46,9 @@ featured: false
 # Custom links (uncomment lines below)
 links:
 - name: Paper
-       url: https://arxiv.org/abs/2106.05241
+  url: https://arxiv.org/abs/2106.05241
 - code: Code
-    code: https://github.com/FabianFalck/mfcvae
+  code: https://github.com/FabianFalck/mfcvae
 
 url_pdf: ''
 url_code: ''
