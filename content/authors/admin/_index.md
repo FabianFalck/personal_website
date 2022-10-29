@@ -111,7 +111,7 @@ and hemorrhage diagnosis with recurrent neural networks at the NeurIPS 2018 ML4H
 
 I studied Computer Science (MSc) at Imperial College London, 
 and Engineering (BSc+MSc) at Karlsruhe Institute of Technology in Germany. 
-During my degrees, I studied at and visited at Tsinghua University（清华大学) in Beijing, Shanghai Jiao Tong University (上海交通大学), 
+During my degrees, I studied at and visited Tsinghua University (清华大学) in Beijing, Shanghai Jiao Tong University (上海交通大学), 
 the University of Oxford, Singapore Management University, and Carnegie Mellon University in the US.
 
 I play the guitar, enjoy singing and racket sports.
