@@ -96,28 +96,28 @@ I am a third year PhD student in Statistical Machine Learning in the [OxCSML gro
 I am also a [Graduate Teaching and Research Scholar in Computer Science](https://www.oriel.ox.ac.uk/people/fabian-falck/) at Oriel College, University of Oxford, teaching maths courses. 
 In summer 2022, I interned with the Amazon Web Services AI Lab in Berlin, Germany, advised by Dr. Jan Gasthaus and Richard Kurle.
 
-My research interest lies in probabilistic deep learning, generative modelling, causal inference, and applications in health. 
+My research interests lie in probabilistic deep learning, generative modelling, causal inference, and applications in health. 
 
 Recently, I have worked on analysing the regularisation property of U-Nets, which are widely used in generative modelling, and hierarchical variational autoencoders (NeurIPS 2022 oral, to appear). 
 I also studied [generalising the propensity score theory to balancing scores in matching for treatment effect estimation in causal inference](https://proceedings.mlr.press/v151/clivio22a/clivio22a.pdf) (AISTATS 2022), 
 and [variational autoencoders for clustering to find multiple partitions of high-dimensional data](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) (NeurIPS 2021).   
 
-Before joining Oxford, I worked with [Prof. Andrew Davison](https://www.doc.ic.ac.uk/~ajd/) in computer vision and robotics at the [Dyson Robotics Lab](https://www.imperial.ac.uk/dyson-robotics-lab/), and [with Dr. Petar Kormushev](https://www.imperial.ac.uk/people/p.kormushev) at the [Robot Intelligence Lab](https://www.imperial.ac.uk/robot-intelligence/) both at Imperial College London. 
-I also worked with [Prof. Artur Dubrawski](https://www.ri.cmu.edu/ri-faculty/artur-w-dubrawski/) on machine learning for health at the [Auton Lab](https://autonlab.org/) at Carnegie Mellon University. Selected publications are on
+Before joining Oxford for my PhD, I worked with [Prof. Andrew Davison](https://www.doc.ic.ac.uk/~ajd/) in computer vision and robotics at the [Dyson Robotics Lab](https://www.imperial.ac.uk/dyson-robotics-lab/), and [with Dr. Petar Kormushev](https://www.imperial.ac.uk/people/p.kormushev) at the [Robot Intelligence Lab](https://www.imperial.ac.uk/robot-intelligence/), both at Imperial College London. 
+I also worked with [Prof. Artur Dubrawski](https://www.ri.cmu.edu/ri-faculty/artur-w-dubrawski/) on machine learning for health at the [Auton Lab](https://autonlab.org/) at Carnegie Mellon University. Selected publications include
 a [comparison of view-based and map-based semantic labelling in real-time SLAM systems](https://arxiv.org/abs/2002.10342) (ICRA 2020),
 an [exoskeleton for teleoperation called DE VITO](https://link.springer.com/book/10.1007/978-3-030-23807-0) (TAROS 2019 - the UK's largest robotics conference, Best Paper Award), 
 a [software architecture and play fetch demo for Robot DE NIRO](https://www.frontiersin.org/articles/10.3389/frobt.2020.00066/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field&journalName=Frontiers_in_Robotics_and_AI&id=466867)  (journal Frontiers in Robotics and AI; IROS workshop (spotlight)) 
-and hemorrhage diagnosis with recurrent neural networks at the NeurIPS 2018 ML4H workshop (spotlight).
+and haemorrhage diagnosis with recurrent neural networks at the NeurIPS 2018 ML4H workshop (spotlight).
 
 I studied Computer Science (MSc) at Imperial College London, 
 and Engineering (BSc+MSc) at Karlsruhe Institute of Technology in Germany. 
 During my degrees, I studied at and visited Tsinghua University (清华大学) in Beijing, Shanghai Jiao Tong University (上海交通大学), 
 the University of Oxford, Singapore Management University, and Carnegie Mellon University in the US.
 
-I play the guitar, enjoy singing and racket sports.
+I enjoy playing the guitar, singing and racket sports.
 I speak English, German and Chinese. 
 
-Do reach out to me if my research is of interest to you, or you would like to collaborate!
+Do reach out to me if my research is of interest to you - I'm always happy to chat about potential collaborations!
 
 Contact: ***fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk***
 
