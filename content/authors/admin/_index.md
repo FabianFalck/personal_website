@@ -119,7 +119,7 @@ I speak English, German and Chinese.
 
 Do reach out to me if my research is of interest to you - I'm always happy to chat about potential collaborations!
 
-Contact: ***fabian [dot] falck [at] stats [dot] ox [dot] ac [dot] uk***
+Contact: ***fabian.falck 'at' stats.ox.ac.uk***
 
 
 
