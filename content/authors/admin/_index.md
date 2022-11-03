@@ -115,7 +115,7 @@ During my degrees, I studied at and visited Tsinghua University (清华大学) i
 the University of Oxford, Singapore Management University, and Carnegie Mellon University in the US.
 
 I enjoy playing the guitar, singing and racket sports.
-I speak English, German and Chinese. 
+I speak German, English and Chinese. 
 
 Do reach out to me if my research is of interest to you - I'm always happy to chat about potential collaborations!
 
