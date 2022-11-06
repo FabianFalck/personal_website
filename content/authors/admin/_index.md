@@ -121,5 +121,15 @@ Do reach out to me if my research is of interest to you - I'm always happy to ch
 
 Contact: ***fabian.falck 'at' stats.ox.ac.uk***
 
+# News
+
+* Our paper on U-Nets and hierarchical VAEs has been accepted at NeurIPS 2022 (oral). I'm really excited about this work with fantastic collaborators! 
+* I received an Enrichment Award at [The Alan Turing Institute](https://www.turing.ac.uk/), the UK’s national institute for AI. Looking forward to spending part of my PhD studies in London! 
+* In summer 2022, I will intern at Amazon Web Services AI Labs in Berlin, Germany, working with [Jan Gasthaus](https://www.amazon.science/author/jan-gasthaus) and [Richard Kurle](https://www.amazon.science/author/richard-kurle). 
+* Our paper on [a theory extending propensity score matching via balancing scores](https://proceedings.mlr.press/v151/clivio22a/clivio22a.pdf) has been accepted at AISTATS 2022.
+* I'm delighted to serve as workflow chair for [ML4H 2021](https://ml4health.github.io/2021/) together with [Yuyin Zhou](https://yuyinzhou.github.io/), working on all things submissions.  
+* Our paper on [multi-partition clustering of high-dimensional data through variational autoencoders with a structured prior](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) has been accepted at NeurIPS 2021.
+
+
 
 
