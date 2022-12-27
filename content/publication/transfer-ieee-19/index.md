@@ -8,7 +8,7 @@ authors:
   - Niklas Stoehr
   - Luis Sanchez
   - Daniil Gannota
-  - admin
+  - FF
 
 # Author notes (optional)
 author_notes:

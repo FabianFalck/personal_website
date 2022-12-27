@@ -6,7 +6,7 @@ title: 'Robot DE NIRO: A Human-Centered, Autonomous, Mobile Research Platform fo
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
 # and it will be replaced with their full name and linked to their profile.
 authors:
-  - admin
+  - FF
   - Sagar Doshi
   - Marion Tormento
   - Gor Nersisyan

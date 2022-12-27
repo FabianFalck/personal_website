@@ -6,7 +6,7 @@ title: 'Detecting Patterns of Physiological Response to Hemodynamic Stress via U
 # and it will be replaced with their full name and linked to their profile.
 authors:
   - Chufan Gao
-  - admin
+  - FF
   - Mononito Goswami
   - Michael R. Pinsky
   - Anthony Wertz

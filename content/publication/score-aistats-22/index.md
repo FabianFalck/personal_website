@@ -6,7 +6,7 @@ title: 'Neural Score Matching for High-Dimensional Causal Inference'
 # and it will be replaced with their full name and linked to their profile.
 authors:
   - Oscar Clivio
-  - admin
+  - FF
   - George Deligiannidis
   - Brieuc Lehmann
   - Chris Holmes

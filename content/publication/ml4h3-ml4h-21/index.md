@@ -9,7 +9,7 @@ authors:
   - Stephen Pfohl
   - Girmaw Abebe Tadesse
   - Luis Oala
-  - Fabian Falck
+  - FF
   - Yuyin Zhou
   - Liyue Shen
   - Ghada Zamzmi

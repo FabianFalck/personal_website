@@ -10,7 +10,7 @@ authors:
   - Emily Alsentzer
   - Sam Finlayson
   - Michael Oberst
-  - admin
+  - FF
   - Corey Chivers
   - Andrew L. Beam
   - Tristan Naumann

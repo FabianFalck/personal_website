@@ -7,7 +7,7 @@ title: 'Ivy: Templated Deep Learning for Inter-Framework Portability'
 authors:
     - Daniel Lenton
     - Fabio Pardo
-    - admin
+    - FF
     - Stephen James
     - Ronald Clark
     

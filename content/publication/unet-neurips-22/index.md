@@ -5,7 +5,7 @@ title: 'A Multi-Resolution Framework for U-Nets with Applications to Hierarchica
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
 # and it will be replaced with their full name and linked to their profile.
 authors:
-  - admin
+  - FF
   - Christopher Williams
   - Dominic Danks
   - George Deligiannidis
@@ -50,7 +50,7 @@ featured: false
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: ''
+url_pdf: 'https://openreview.net/forum?id=PQFr7FbGbO'
 url_code: ''
 url_dataset: ''
 url_poster: ''

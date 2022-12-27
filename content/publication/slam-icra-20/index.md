@@ -8,7 +8,7 @@ title: 'Comparing View-Based and Map-Based Semantic Labelling in Real-Time SLAM'
 # and it will be replaced with their full name and linked to their profile.
 authors:
     - Zoe Landgraf
-    - admin
+    - FF
     - Michael Bloesch
     - Stefan Leutenegger
     - Andrew Davison
