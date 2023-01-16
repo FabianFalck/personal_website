@@ -33,7 +33,7 @@ education:
   courses:
     - course: PhD in Statistical Machine Learning
       institution: University of Oxford
-      year: 2024 (expected)
+      year: 
     - course: MSc in Computer Science
       institution: Imperial College London
       year: 2018
@@ -97,7 +97,7 @@ I am also a [Graduate Teaching and Research Scholar in Computer Science](https:/
 
 My research interests lie in probabilistic deep learning, generative modelling, causal inference, and applications in health. 
 
-Recently, I have worked on analysing the regularisation property of U-Nets, which are widely used in generative modelling, and hierarchical variational autoencoders (NeurIPS 2022 oral, to appear). 
+Recently, I have worked on [analysing the regularisation property of U-Nets, which are widely used in generative modelling, and hierarchical variational autoencoders](https://openreview.net/forum?id=PQFr7FbGbO) (NeurIPS 2022 oral). 
 I also studied [generalising the propensity score theory to balancing scores in matching for treatment effect estimation in causal inference](https://proceedings.mlr.press/v151/clivio22a/clivio22a.pdf) (AISTATS 2022), 
 and [variational autoencoders for clustering to find multiple partitions of high-dimensional data](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) (NeurIPS 2021).
 In summer 2022, I interned with the Amazon Web Services AI Lab in Berlin, Germany, advised by Dr. Jan Gasthaus and Richard Kurle.   
