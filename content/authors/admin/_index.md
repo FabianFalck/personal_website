@@ -92,25 +92,24 @@ highlight_name: true
 
 Hi and welcome! I am Fabian - great to have you here!
 
-I am a third year PhD student in Statistical Machine Learning in the [OxCSML group](https://csml.stats.ox.ac.uk/) at University of Oxford, supervised by [Prof. Chris Holmes](https://www.stats.ox.ac.uk/~cholmes/) and [Prof. Arnaud Doucet](https://www.stats.ox.ac.uk/~doucet/). 
+I am a final-year year PhD student in Statistical Machine Learning in the [OxCSML group](https://csml.stats.ox.ac.uk/) at University of Oxford, supervised by [Prof. Chris Holmes](https://www.stats.ox.ac.uk/~cholmes/) and [Prof. Arnaud Doucet](https://www.stats.ox.ac.uk/~doucet/). 
 I am also a [Graduate Teaching and Research Scholar in Computer Science](https://www.oriel.ox.ac.uk/people/fabian-falck/) at Oriel College, University of Oxford, teaching maths courses. 
 
-My research interests lie in probabilistic deep learning, generative modelling, causal inference, and applications in health. 
+My research interest lies in generative modelling, and intersects with probabilistic deep learning, causal inference, Bayesian inference, unsupervised representation learning and its applications in health. 
 
-Recently, I have worked on [analysing the regularisation property of U-Nets, which are widely used in generative modelling, and hierarchical variational autoencoders](https://openreview.net/forum?id=PQFr7FbGbO) (NeurIPS 2022 oral). 
-I also studied [generalising the propensity score theory to balancing scores in matching for treatment effect estimation in causal inference](https://proceedings.mlr.press/v151/clivio22a/clivio22a.pdf) (AISTATS 2022), 
-and [variational autoencoders for clustering to find multiple partitions of high-dimensional data](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) (NeurIPS 2021).
-In summer 2022, I interned with the Amazon Web Services AI Lab in Berlin, Germany, advised by Dr. Jan Gasthaus and Richard Kurle.   
+Recently, my research analysed [why U-Nets are a useful inductive bias in diffusion models](https://arxiv.org/abs/2305.19638) (NeurIPS 2023), [connections between hierarchical variational autoencoders and diffusion processes, as well as U-Nets and Wavelets](https://arxiv.org/abs/2301.08187) (NeurIPS 2022 oral), and [variational autoencoders with a structured prior for clustering to find multiple partitions of high-dimensional data](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) (NeurIPS 2021).
+I also studied [generalising the propensity score theory to balancing scores in matching for treatment effect estimation in causal inference](https://proceedings.mlr.press/v151/clivio22a/clivio22a.pdf) (AISTATS 2022). 
+In the summers of 2022 and 2023, I interned with the Amazon Web Services AI Lab in Berlin, and Microsoft Research in Cambridge. 
 
 Before joining Oxford for my PhD, I worked with [Prof. Andrew Davison](https://www.doc.ic.ac.uk/~ajd/) in computer vision and robotics at the [Dyson Robotics Lab](https://www.imperial.ac.uk/dyson-robotics-lab/), and [with Dr. Petar Kormushev](https://www.imperial.ac.uk/people/p.kormushev) at the [Robot Intelligence Lab](https://www.imperial.ac.uk/robot-intelligence/), both at Imperial College London. 
 I also worked with [Prof. Artur Dubrawski](https://www.ri.cmu.edu/ri-faculty/artur-w-dubrawski/) on machine learning for health at the [Auton Lab](https://autonlab.org/) at Carnegie Mellon University. Selected publications include
 a [comparison of view-based and map-based semantic labelling in real-time SLAM systems](https://arxiv.org/abs/2002.10342) (ICRA 2020),
-an [exoskeleton for teleoperation called DE VITO](https://link.springer.com/book/10.1007/978-3-030-23807-0) (TAROS 2019 - the UK's largest robotics conference, Best Paper Award), 
+an [exoskeleton for teleoperation called DE VITO](https://link.springer.com/book/10.1007/978-3-030-23807-0) (Best Paper Award at TAROS 2019 - the UK's largest robotics conference), 
 a [software architecture and play fetch demo for Robot DE NIRO](https://www.frontiersin.org/articles/10.3389/frobt.2020.00066/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field&journalName=Frontiers_in_Robotics_and_AI&id=466867)  (journal Frontiers in Robotics and AI; IROS workshop (spotlight)) 
 and haemorrhage diagnosis with recurrent neural networks at the NeurIPS 2018 ML4H workshop (spotlight).
 
-I studied Computer Science (MSc) at Imperial College London, 
-and Engineering (BSc+MSc) at Karlsruhe Institute of Technology in Germany. 
+I studied computer science (MSc) at Imperial College London, 
+and industrial engineering (BSc+MSc) at Karlsruhe Institute of Technology in Germany. 
 During my degrees, I studied at and visited Tsinghua University (清华大学) in Beijing, Shanghai Jiao Tong University (上海交通大学), the University of Oxford, Singapore Management University, and Carnegie Mellon University in the US.
 
 I enjoy playing the guitar, singing and racket sports.
@@ -122,9 +121,12 @@ Contact: ***fabian.falck 'at' stats.ox.ac.uk***
 
 # News
 
+* Our follow-up paper on why U-Nets are a go-to inductive bias in score-based diffusion models and Multi-ResNets, a novel U-Net architecture, has been accepted at NeurIPS 2023.
+* I co-organised the [inaugural ELLIS RobustML workshop](https://sites.google.com/view/ellis-robust-ml-workshop/home) in Espoo, Finland. I really enjoyed the event with [fantastic speakers](https://sites.google.com/view/ellis-robust-ml-workshop/speakers-and-talks)!
+* Just finished my internship at Microsoft Research Cambridge! An incredible place, and a fantastic internship experience!
 * Our paper on U-Nets and hierarchical VAEs has been accepted at NeurIPS 2022 (oral). I'm really excited about this work with fantastic collaborators! 
 * I received an Enrichment Award at [The Alan Turing Institute](https://www.turing.ac.uk/), the UK’s national institute for AI. Looking forward to spending part of my PhD studies in London! 
-* In summer 2022, I will intern at Amazon Web Services AI Labs in Berlin, Germany, working with [Jan Gasthaus](https://www.amazon.science/author/jan-gasthaus) and [Richard Kurle](https://www.amazon.science/author/richard-kurle). 
+* In summer 2022, I will intern at Amazon Web Services AI Labs in Berlin, Germany! 
 * Our paper on [a theory extending propensity score matching via balancing scores](https://proceedings.mlr.press/v151/clivio22a/clivio22a.pdf) has been accepted at AISTATS 2022.
 * I'm delighted to serve as workflow chair for [ML4H 2021](https://ml4health.github.io/2021/) together with [Yuyin Zhou](https://yuyinzhou.github.io/), working on all things submissions.  
 * Our paper on [multi-partition clustering of high-dimensional data through variational autoencoders with a structured prior](https://proceedings.neurips.cc/paper/2021/file/48cb136b65a69e8c2aa22913a0d91b2f-Paper.pdf) has been accepted at NeurIPS 2021.

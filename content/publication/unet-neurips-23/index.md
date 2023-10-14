@@ -1,18 +1,16 @@
 ---
-title: 'A Multi-Resolution Framework for U-Nets with Applications to Hierarchical VAEs'
+title: 'A Unified Framework for U-Net Design and Analysis'
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
 # and it will be replaced with their full name and linked to their profile.
 authors:
-  - FF
   - Christopher Williams
-  - Dominic Danks
+  - FF
   - George Deligiannidis
-  - Christopher Yau
   - Chris Holmes
   - Arnaud Doucet
-  - Matthew Willetts
+  - Saifuddin Syed
 
 # Author notes (optional)
 author_notes:
@@ -32,8 +30,8 @@ publishDate: '2017-01-01T00:00:00Z'
 publication_types: ['1']
 
 # Publication name and optional abbreviated publication name.
-publication: NeurIPS 2022 (***oral***)
-publication_short: NeurIPS 2022 (***oral***)
+publication: NeurIPS 2023 
+publication_short: NeurIPS 2023 
 
 # abstract: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.
 
@@ -50,7 +48,7 @@ featured: false
 # - name: Custom Link
 #   url: http://example.org
 
-url_pdf: 'https://openreview.net/forum?id=PQFr7FbGbO'
+url_pdf: 'https://arxiv.org/abs/2305.19638'
 url_code: ''
 url_dataset: ''
 url_poster: ''
