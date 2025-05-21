@@ -40,11 +40,11 @@
   <meta property="og:type" content="website">
 {{- end }}
 
-{{- with partial "_funcs/get-page-images" . }}
+<!-- {{- with partial "_funcs/get-page-images" . }}
   {{- range . | first 6 }}
     <meta property="og:image" content="{{ .Permalink }}">
   {{- end }}
-{{- else }}
+{{- else }} -->
 
   {{- /*
     Source modified to load `assets/images/og-image.{webp,png,jpg}` files if any of them exists.
@@ -59,7 +59,7 @@
     {{- end }}
   {{- end }}
   
-{{- end }}
+<!-- {{- end }} -->
 
 {{- with .Params.audio }}
   {{- range . | first 6  }}
