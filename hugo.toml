@@ -1,7 +1,10 @@
-baseURL = 'https://example.org/'
+baseURL = 'www.fabianfalck.com'
 languageCode = 'en-us'
 defaultContentLanguage = 'en-us'
-title = 'typo'
+title = "Fabian Falck"
+
+# Google analytics code
+googleAnalytics = "G-D3DKQVX766"
 
 [module]
 [module.hugoVersion]
@@ -10,6 +13,79 @@ min = "0.116.0"
 
 # Default config
 [params.breadcrumbs]
-enabled = true
+enabled = false
 showCurrentPage = true
 home = "Home"
+
+
+[params]
+
+homeIntroTitle = "Bio"
+homeIntroContent = """
+Hi and welcome! I am Fabian - great to have you here!
+
+I am a researcher at Microsoft Research Cambridge. 
+Before, I did my PhD in Statistical Machine Learning in in the [OxCSML group](https://csml.stats.ox.ac.uk/) at the University of Oxford, supervised by [Prof. Chris Holmes](https://www.stats.ox.ac.uk/~cholmes/) and [Prof. Arnaud Doucet](https://www.stats.ox.ac.uk/~doucet/).
+I was also a [Graduate Teaching and Research Scholar in Computer Science](https://www.oriel.ox.ac.uk/people/fabian-falck/) at Oriel College, University of Oxford, teaching maths courses, and studied at the [The Alan Turing Institute](https://www.turing.ac.uk/), the UK's national institute for AI.
+
+My research focusses on: 
+- Understanding the inductive biases of generative models, particularly [diffusion/flow-matching models](https://arxiv.org/abs/2505.11278), [hierarchical VAEs](https://arxiv.org/abs/2301.08187),  and their neural architecture such as the [U-Net](https://arxiv.org/abs/2305.19638)
+- Properties of LLMs, such as their [fixed-point behaviour](https://arxiv.org/abs/2502.07827), [counterfactual reasoning](https://openreview.net/forum?id=XZ2Cu6F5sO), and their [ability to perform Bayesian inference](https://arxiv.org/abs/2406.00793)  
+- Large-scale, multi-modal applications of generative models, such as [analog-amenable machine learning](https://www.microsoft.com/en-us/research/blog/unlocking-the-future-of-computing-the-analog-iterative-machines-lightning-fast-approach-to-optimization/}), inverse problems, and [radiology-report generation](https://www.microsoft.com/en-us/research/project/project-maira/)
+
+Research highlights include NeurIPS 2022 oral (top 1.76%), a ICML 2025 spotlight (top 2.6%), 2 workshop orals at ICLR and AAAI, a publication in Nature Reviews Genetics and a Best Paper Award at TAROS, the UK's largest robotics conference before my PhD.
+
+If you would like to collaborate or be co-supervised by me, please reach out!
+
+Contact: fabian.falck1@gmail.com
+
+"""
+
+homeCollectionTitle = 'Blog posts'
+homeCollection = 'posts'
+
+showFooter = false
+# footerContent = "Your **custom** md `footer`"
+
+description = "Fabian Falck's personal website"
+
+# faviconPath = 'static/favicon'
+
+
+[[params.social]]
+name = "googlescholar"
+url = "https://scholar.google.com/citations?user=DcpEOEIAAAAJ&hl=en"
+
+[[params.social]]
+name = "github"
+url = "https://github.com/FabianFalck"
+
+[[params.social]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/fabian-falck/"
+
+[[params.social]]
+name = "twitter"
+url = "https://x.com/fabianfalck"
+
+[[params.social]]
+name = "soundcloud"
+url = "https://soundcloud.com/fabian-falck"
+
+
+[[params.menu]]
+name = "home"
+url = "/"
+newTab = false
+
+[[params.menu]]
+name = "blog"
+url = "/posts"
+newTab = false
+
+[[params.menu]]
+name = "publications"
+url = "/publications/"
+newTab = false
+
+
