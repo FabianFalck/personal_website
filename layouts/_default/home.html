@@ -53,6 +53,14 @@
             {{ partial "pagination-controls.html" $paginator}}
         </div>
         {{ end }}
+
+        <!-- Selected publications section -->
+        {{ with .Site.Params.homeSelectedTitle }}
+        <h1>{{ . }}</h1>
+        {{ end }}
+        {{ with .Site.Params.homeSelected }}
+        <div>{{ . | markdownify }}</div>
+        {{ end }}
     </div>
 </div>
 {{ end }}

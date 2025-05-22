@@ -44,6 +44,7 @@ Contact: fabian.falck1@gmail.com
 homeCollectionTitle = 'Blog posts'
 homeCollection = 'posts'
 
+
 showFooter = false
 # footerContent = "Your **custom** md `footer`"
 

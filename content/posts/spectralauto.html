@@ -1,0 +1,1263 @@
+---
+title: "Diffusion is not necessarily Spectral Autoregression"
+date: 2025-05-22
+draft: false
+tags: ["blog", "hugo"]
+description: "TODO"
+---
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Diffusion is not necessarily spectral autoregression</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+</header>
+<p>In this blog post, we want to answer the question:</p>
+<p>As the title suggests, this blog post directly responds to Sander
+Dieleman’s blog post <a
+href="https://sander.ai/2024/09/02/spectral-autoregression.html">‘Diffusion
+is spectral autoregression’</a> which I really enjoyed. I spoke to many
+researchers in the community about it, and it prompted me to think about
+the relationship between Large Language Models (LLMs) and diffusion
+models, and why each excels on different tasks and data modalities. This
+blog post is accompanied by a <a
+href="https://arxiv.org/abs/2505.11278">paper titled ‘A Fourier Space
+Perspective on Diffusion Models’</a> together with my co-authors at
+Microsoft Research Cambridge that I cite at the very end of the post,
+and which the majority of content is drawn from. Even though the focus
+of this blog post is slightly different, I will directly paraphrase from
+it where convenient. I begin by summarising Sander’s post from my
+perspective, qualitatively using exactly his argument, but trying to
+augment it with my own discussion and some new figures. Up front, I want
+to explain the notion of approximate spectral autoregression, because it
+is central to Sander’s post.</p>
+<p>We will understand this definition carefully in the now following
+first part of this blog post.</p>
+<h1 class="unnumbered"
+id="background-ddpm-diffusion-is-approximate-spectral-autoregression">Background:
+DDPM Diffusion is approximate spectral autoregression</h1>
+<p>Diffusion models are the state-of-the-art model on data such as
+images, videos, proteins and materials. Whether it is Stable Diffusion
+v1/v2 or Imagen for text-to-image generation <span class="citation"
+data-cites="rombach2022high baldridge2024imagen"><a
+href="#ref-rombach2022high" role="doc-biblioref">[1]</a>, <a
+href="#ref-baldridge2024imagen" role="doc-biblioref">[2]</a></span>,
+Sora for producing high-resolution videos of impressive fidelity <span
+class="citation" data-cites="videoworldsimulators2024"><a
+href="#ref-videoworldsimulators2024"
+role="doc-biblioref">[3]</a></span>, RFdiffusion or BioEmu for
+generating protein structures <span class="citation"
+data-cites="watson2023novo lewis2024scalable"><a
+href="#ref-watson2023novo" role="doc-biblioref">[4]</a>, <a
+href="#ref-lewis2024scalable" role="doc-biblioref">[5]</a></span>, or
+MatterGen for synthesising inorganic materials <span class="citation"
+data-cites="zeni2023mattergen"><a href="#ref-zeni2023mattergen"
+role="doc-biblioref">[6]</a></span>: diffusion models serve as the
+workhorse for these modalities, and autoregressive models (LLMs), which
+excel on text, seem to not be able to compete with them (at least at
+present, and when considering all aspects including computational
+efficiency). – <em>Why is that? What do these modalities have in common
+which renders diffusion models the superior model?</em></p>
+<h4 class="unnumbered"
+id="data-modalities-where-diffusion-excels-follow-a-fourier-power-law.">Data
+modalities where diffusion excels follow a Fourier power law. </h4>
+<p>In my quest to answer this question, I found <a
+href="https://sander.ai/2024/09/02/spectral-autoregression.html#fnref:heat">Sander
+Dieleman’s blog post ‘Diffusion is spectral autoregression’</a>, which
+very convincingly discussed an argument I was lingering on for a while:
+the modalities where diffusion models work well—images, videos, audio,
+proteins, materials and others—share the property of a decaying signal
+variance in Fourier space. Low-frequency components have orders of
+magnitude higher signal variance (and magnitude) than high frequencies
+(see the figure below).</p>
+<p>Let’s understand this carefully. Say we have a natural image (Figure
+1, [left]). Its pixels are the coefficients over a standard basis (<span
+class="math inline">\(\mathbf{e}_1 = (1,0,0,0,\dots)^T,
+\mathbf{e}_2=(0,1,0,0,\dots)^T, \dots\)</span>): each pixel defines the
+constant value the image takes in a spatially-constrained part of the
+image. If we take this image and compute its discrete Fourier transform
+(DFT), we obtain a representation that contains the same information,
+but now in Fourier space (Figure 1, [right]). This Fourier image has the
+same dimension as the pixel image, but its coefficients are
+complex-valued (rather than real-valued), and we here plot their
+magnitude.</p>
+<figure>
+<img src="/spectralauto/Figures/castle.png" />
+<figcaption>Figure 1. An image of the Karlsruhe Palace represented in pixel space
+and in Fourier space (magnitude).</figcaption>
+</figure>
+<p>We now apply the DFT to a dataset of images, and compute the variance
+per dimension, assuming all images have equal dimensions (and we
+otherwise interpolate them), illustrated in the heatmap in Figure 2.
+Standard DFT libraries sort the coefficients in a way that those
+coefficients corresponding to low frequencies are in the centre and
+those corresponding to high frequencies are towards the edges/corners of
+the Fourier-transformed image. We can immediately see that low-frequency
+components have a significantly larger signal variance than
+high-frequencies. That’s not a new finding by the way: Field and van der
+Schaaf et al. observed this phenomenon in image data over 30 years ago
+<span class="citation"
+data-cites="field1987relations van1996modelling"><a
+href="#ref-field1987relations" role="doc-biblioref">[7]</a>, <a
+href="#ref-van1996modelling" role="doc-biblioref">[8]</a></span> (and
+that’s just the oldest sources I could find in related work, it was
+probably known for longer), <span class="citation"
+data-cites="rissanen2022generative"><a
+href="#ref-rissanen2022generative" role="doc-biblioref">[9]</a></span>
+viewed it recently in the context of diffusion models. But where does
+this notion of <em>frequency</em> come from?</p>
+<figure id="fig:c_matrix">
+<img src="/spectralauto/Figures/C_matrix.png"
+alt="Figure 1: The signal variance \mathbf{C} in Fourier space (magnitude) on a \log_{10} scale for the CIFAR10 [left] and CelebA [right] dataset. For visualisation purposes, the largest value plotted in bright yellow corresponds to a value larger or equal to the .95-quantile of \mathbf{C}. " />
+<figcaption aria-hidden="true">Figure 1: The signal variance <span
+class="math inline">\(\mathbf{C}\)</span> in Fourier space (magnitude)
+on a <span class="math inline">\(\log_{10}\)</span> scale for the
+CIFAR10 [left] and CelebA [right] dataset. For visualisation purposes,
+the largest value plotted in bright yellow corresponds to a value larger
+or equal to the <span class="math inline">\(.95\)</span>-quantile of
+<span class="math inline">\(\mathbf{C}\)</span>. </figcaption>
+</figure>
+<p>Each coefficient in Fourier space corresponds to basis functions
+which are a mixture of sines and cosines of different frequency. To see
+this, we can write the DFT in 2D (considering an image with one channel
+as an example) as <span class="math display">\[X[k, \ell] =
+\sum_{m=0}^{N-1} \sum_{n=0}^{N-1} x[m, n] \cdot e^{-2\pi i \left(
+\frac{km + \ell n}{N} \right)}.\]</span> where <span
+class="math inline">\(X[k, \ell]\)</span> is a dimension of our
+Fourier-transformed image and <span
+class="math inline">\(x[m,n]\)</span> is a pixel (coefficient in the
+standard basis). Using <a
+href="https://en.wikipedia.org/wiki/Euler%27s_formula">Euler’s
+formula</a>, we can write the DFT as <span
+class="math display">\[\underbrace{X[k, \ell]}_{\text{Fourier
+coefficient}} = \sum_{m=0}^{N-1} \sum_{n=0}^{N-1} \underbrace{x[m,
+n]}_{\text{pixel}} \underbrace{ \left[ \cos\left( 2\pi \left( \frac{km +
+\ell n}{N} \right) \right) - i \sin\left( 2\pi \left( \frac{km + \ell
+n}{N} \right) \right) \right] }_{\text{Fourier basis function}}\]</span>
+In pixel space, each tuple <span class="math inline">\((m,n)\)</span>
+indexes one unique pixel. We can for instance achieve this by
+(arbitrarily) indexing from the top-left corner of the image, but there
+is no notion of frequency in pixel space. In Fourier space, however,
+higher values of <span class="math inline">\(k\)</span> and <span
+class="math inline">\(\ell\)</span> correspond to basis functions, sine
+and cosine functions, which vary faster, which have a higher
+frequency.</p>
+<p>We now want to make our life a little bit easier and sort the Fourier
+coefficients <span class="math inline">\(X[k, \ell]\)</span> in one
+dimension from low to high frequency (of the corresponding basis
+function), which is easier to handle if we have data of different sizes,
+such as 1D (audio), 2D (image) and 3D data (video, protein density maps)
+data. To do so, we start at the centre of our Fourier space
+representation, and walk in a spiral towards the edges. More precisely,
+we sort them by Manhattan distance of the indices <span
+class="math inline">\((k,\ell)\)</span> from the centre of the Fourier
+representation at (0,0) (which naturally works for 1D and 3D data, too).
+If we apply this sorting to the dimension-wise variances in Fourier
+space in Figure 2, we get a 1D tensor of variances.</p>
+<p>In Figure 3 <a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a> , we look at these (one-dimensional)
+sorted signal variances for image, video, audio and protein datasets,
+respectively. Since dimension-wise signal variances can sometimes vary a
+lot between neighbouring dimensions and we are mainly interested in the
+overall trend, we are actually plotting a running average of the signal
+variance. – And there we have it: the signal variance decreases rapidly
+with increasing frequency. Not just for images as we’ve already seen
+above, but also for other modalities which diffusion models really work
+well for.</p>
+<figure id="fig:fig1">
+<img src="/spectralauto/Figures/modalities_fourier/powerlaw.png"
+alt="Figure 3. The Fourier power law observed in (top-left) images [10], (top-right) videos [11], (bottom-left) audio [12], and (bottom-right) Cryo-EM derived protein density maps [13]. " />
+<figcaption aria-hidden="true">Figure 2: <em>The Fourier power law</em>
+observed in (top-left) images <span class="citation"
+data-cites="krizhevsky2009learning"><a
+href="#ref-krizhevsky2009learning" role="doc-biblioref">[10]</a></span>,
+(top-right) videos <span class="citation"
+data-cites="kay2017kinetics"><a href="#ref-kay2017kinetics"
+role="doc-biblioref">[11]</a></span>, (bottom-left) audio <span
+class="citation" data-cites="gtanz1999music"><a
+href="#ref-gtanz1999music" role="doc-biblioref">[12]</a></span>, and
+(bottom-right) Cryo-EM derived protein density maps <span
+class="citation" data-cites="wwpdb2024emdb"><a href="#ref-wwpdb2024emdb"
+role="doc-biblioref">[13]</a></span>. </figcaption>
+</figure>
+<h4
+id="fourier-power-law-data-under-a-ddpm-forward-diffusion-process">Fourier
+power law data under a DDPM forward diffusion process</h4>
+<p>What happens if we now add noise to data which exhibits this Fourier
+power law property? In the DDPM forward process, we add white noise to a
+data item (say an image), meaning that each dimension of the noise in
+Fourier space has equal variance. More specifically, we obtain a noisy
+data item <span class="math inline">\(\mathbf{x}_t\)</span> as <span
+class="math display">\[\mathbf{x}_t =
+\underbrace{\sqrt{\overline{\alpha}_t} \mathbf{x}_0 }_{\text{signal}} +
+\underbrace{\sqrt{1 - \overline{\alpha}_t}
+\boldsymbol{\epsilon}}_{\text{noise}}, \quad \boldsymbol{\epsilon} \sim
+\mathcal{N}(0, \mathbf{I}).
+    \label{eq:forward}\]</span> Equivalently, we can view the forward
+process in Fourier space, applying the DFT operator <span
+class="math inline">\(\mathbf{F}\)</span>, obtaining (by linearity of
+<span class="math inline">\(\mathbf{F}\)</span>) <span
+class="math display">\[\begin{aligned}
+    \mathbf{y}_t := \mathbf{F}\mathbf{x}_t &amp;=
+\mathbf{F}(\sqrt{\overline{\alpha}_t} \mathbf{x}_0) + \mathbf{F}(\sqrt{1
+- \overline{\alpha}_t} \boldsymbol{\epsilon}) \nonumber\\
+    &amp;= \underbrace{\sqrt{\overline{\alpha}_t}
+\mathbf{F}\mathbf{x}_0}_{\text{signal } \mathbf{s}} +
+\underbrace{\sqrt{1 - \overline{\alpha}_t}
+\mathbf{F}\boldsymbol{\epsilon}}_{\text{noise } \mathbf{n}}.
+\label{eq:forward_fourier}
+\end{aligned}\]</span> The vector <span
+class="math inline">\(\mathbf{y}_t\)</span> is our Fourier-transformed
+image, a grid of complex-valued coefficients. We call the left part
+<em>signal</em>, and the right part <em>noise</em> (in Fourier space).
+Furthermore, we can easily show that <span
+class="math inline">\(\mathbf{n} \sim
+\mathcal{CN}(\mathbf{0},\mathbf{F}(1 - \overline{\alpha}_t) \mathbf{I}
+\mathbf{F}^\dagger) = \mathcal{CN}(\mathbf{0}, (1 - \overline{\alpha}_t)
+\mathbf{I}),\)</span> where <span
+class="math inline">\(\mathbf{F}^\dagger\)</span> is the adjoint of
+<span class="math inline">\(\mathbf{F}\)</span>, and <span
+class="math inline">\(\mathcal{CN}(\cdot)\)</span> is a complex normal
+distribution. As time increases, <span
+class="math inline">\(\overline{\alpha}_t\)</span> becomes small
+converging to 0, and the noise in Fourier space becomes large.
+Conversely, the signal is scaled converging to <span
+class="math inline">\(\mathbf{0}\)</span> as time increases.</p>
+<p>Why can we simply introduce the operator <span
+class="math inline">\(\mathbf{F}\)</span> you might ask. Isn’t there a
+fundamental difference if we add noise in image space versus in Fourier
+space? – Since <span class="math inline">\(\mathbf{F}\)</span> is
+invertible, there is a one-to-one correspondence between a DDPM forward
+process in image space and its corresponding forward process in Fourier
+space. So a forward process in image space, where we might actually
+perform the noising computation, can always be equivalently viewed in
+Fourier space.</p>
+<p>Now let’s bring it all together in Figure 4 <a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> .
+We have a signal variance which features the Fourier power law and is in
+addition decreasing (scaled down) with diffusion time (<span
+style="color: red">red</span>), and we have white noise whose variance
+increases with diffusion time (<span style="color: blue">blue</span>).
+We observe that as we add more and more noise in the forward process,
+the high-frequencies are dominated by that noise first, in the sense
+that the signal plus the noise is almost equal to the noise for those
+frequencies, since the noise is orders of magnitude larger.</p>
+<figure id="fig:ddpm_gif">
+  <img 
+    src="/spectralauto/Figures/gifs/ddpm.gif" 
+    alt="DDPM forward process animation" 
+    style="width:80%; display:block; margin:1rem auto;"
+  />
+<figcaption>Figure 4: A DDPM forward process on modalities featuring a
+Fourier power law noises high-frequency components ‘earlier’ (in the
+sense of being dominated by noise) than low-frequency components.
+</figcaption>
+</figure>
+<p>A quantitative measure which captures this notion formally is the
+Signal-to-Noise Ratio (SNR). The SNR (<span
+style="color: darkgreen">green</span> line in Figure 4) is defined as
+<span class="math display">\[\mathsf{SNR}(f) =
+\frac{\mathrm{Var}[s]}{\mathrm{Var}[n]},
+    \label{eq:snr_definition}\]</span> where <span
+class="math inline">\(f(s, n) = s + n\)</span> and <span
+class="math inline">\(s\)</span> and <span
+class="math inline">\(n\)</span> are coordinates of <span
+class="math inline">\(\mathbf{s}\)</span> and <span
+class="math inline">\(\mathbf{n}\)</span> in our definition for <span
+class="math inline">\(\mathbf{y}_t\)</span> above. Here, we can directly
+obtain it from the plot by dividing the signal (<span
+style="color: red">red</span> line) by the noise (<span
+style="color: blue">blue</span> line) at all timesteps.</p>
+<h1 class="unnumbered"
+id="the-inductive-bias-of-the-forward-diffusion-process">The inductive
+bias of the forward diffusion process</h1>
+<p>The SNR is central to analysing the inductive bias of diffusion
+models <span class="citation" data-cites="jiralerspong2025shaping"><a
+href="#ref-jiralerspong2025shaping" role="doc-biblioref">[14]</a></span>
+. It directly governs which frequencies are changing when in the forward
+process. Now you might ask: what does this imply for the backward
+process? Intuitively, the backward process <em>reverses</em> the forward
+process. If it does, the forward process induces a <em>hierarchy</em>
+into the generative process: low frequencies are generated before high
+frequencies <span class="citation" data-cites="gerdes2024gud"><a
+href="#ref-gerdes2024gud" role="doc-biblioref">[15]</a></span>. But
+since the backward process is <em>learned</em>, does it actually reverse
+or mirror the forward process? What if it learned a short cut? Does the
+frequency hierarchy of the forward process truly govern the hierarchy in
+which frequencies are generated in the reverse process?</p>
+<p>The answer is <em>yes</em>, and pretty accurately so. One way to see
+this is by looking at high- and low-pass filtered images at the
+beginning and end of the forward and reverse process of a diffusion
+model trained with DDPM (Figure 5). We observe that the high
+pass-filtered image [4th row] quickly becomes indistinguishable from
+noise and all high-frequency information is gone, while in the low-pass
+filtered image [3rd row], the low-frequency information remains for much
+longer: it is still recognisable at <span
+class="math inline">\(t=T/2\)</span> (half-way through the forward
+process going <span class="math inline">\(t=0\)</span> to <span
+class="math inline">\(t=T)\)</span>. The reverse process mirrors this:
+low-frequency information is already visible at <span
+class="math inline">\(t=T/2\)</span> (half-way through the reverse
+process going <span class="math inline">\(t=T\)</span> to <span
+class="math inline">\(t=0\)</span>), while high-frequency information is
+added mostly during the latter half of the reverse process. For
+completeness, rows 1 and 2 show the (unfiltered) image in pixel and
+Fourier space, respectively. This illustrates precisely the intuition of
+‘approximate spectral autoregression’ in DDPM, and we will later
+contrast this with a hierarchy-free diffusion model.</p>
+<figure>
+<img src="/spectralauto/Figures/fwd-bwd-high-low_v3_ddpm.png" />
+<figcaption>Figure 5. Low- and high-pass filtered images of the forward and
+backward process of a DDPM diffusion model.</figcaption>
+</figure>
+<p>A second, quantitative perspective is by considering the SNR (here in
+units of decibel, <span class="math inline">\(10 \times
+\log_{10}(\cdot)\)</span>) in the forward and the reverse process,
+illustrated across time (x-axis) and per frequency (y-axis) in Figure 6.
+The SNR of the forward process is straightforwardly computed as a Monte
+Carlo estimate of variance of signal and noise in our equation for <span
+class="math inline">\(\mathbf{y}_t\)</span> above and then plugging
+these into the definition of the SNR (we could also compute it
+analytically, but we decided to sample instead, which is closer to what
+we actually compute during training). Since we don’t know the noise in
+the reverse process, we cannot do the same for the reverse process.</p>
+<p>As a proxy, we proceed as follows: we denoise an image step-by-step,
+starting from pure Gaussian noise <span
+class="math inline">\(\mathbf{y}_T\)</span>. In each diffusion step, we
+predict the clean image <span
+class="math inline">\(\hat{\mathbf{y}}_0\)</span>, and by
+reparameterizing obtain the added noise <span
+class="math display">\[\hat{\boldsymbol{\epsilon}} =
+\frac{1}{\sqrt{1-\alpha}_t}(\mathbf{y}_t - \sqrt{\overline{\alpha}_t}
+\hat{\mathbf{y}}_0).\]</span> Now, we estimate a proxy for the SNR in
+the reverse process as <span
+class="math display">\[\mathsf{\widetilde{SNR}}(\mathbf{y}_{t-1}) =
+\frac{\sqrt{\overline{\alpha}_{t-1}}
+\mathrm{Var}[\hat{\mathbf{y}}_0]}{{\sqrt{1-\overline{\alpha}_{t-1}}}\mathrm{Var}[\hat{\boldsymbol{\epsilon}}]},\]</span>
+where the variance is computed over a batch of sample trajectories.
+Obviously, this approach is prone to approximation error of our neural
+network predicting the clean image: the estimate <span
+class="math inline">\(\hat{\mathbf{y}}_0\)</span> is not the ‘true’
+clean image. But assuming the neural network is trained well (and we use
+it at training convergence), it is a quantity measuring something like
+SNR in the reverse process.</p>
+<figure id="fig:snr_heatmaps_ddpm">
+<div class="minipage">
+<p><img src="/spectralauto/Figures/snr_heatmap_ddpm.png" style="width:100.0%"
+alt="image" /> <span id="fig:ddpm" data-label="fig:ddpm"></span></p>
+</div>
+<figcaption>Figure 6. The DDPM forward process in Fourier space (dB
+scale). High frequencies are corrupted earlier (low SNR) than low
+frequencies (high SNR; less SNR change per time increment). In the
+forward process, SNR is computed as a Monte Carlo estimate of the SNR on
+CIFAR10 (referring to the paper for details on the reverse process).
+</figcaption>
+</figure>
+<p>The reverse process hence indeed follows a frequency hierarchy during
+generation, an <em>approximate spectral autoregression</em> as Sander
+framed it pointedly, generating low frequencies first, then high
+frequencies conditional on the low frequencies.</p>
+<p>A concluding comment on this first part and the term <em>approximate
+spectral autoregression</em>: An autoregressive model (say an LLM)
+factors the data distribution as <span
+class="math inline">\(p(\mathbf{y}) = p(y_1, y_2, \dots, y_D) =
+\prod_{d=1}^{D} p(y_d \mid y_1, y_2, \dots, y_{d-1})\)</span>, i.e. each
+dimension is generated one-by-one, conditional on all previously
+generated dimensions. In diffusion models, however, the number of
+diffusion steps <span class="math inline">\(T\)</span> is typically much
+smaller than the number of dimensions <span
+class="math inline">\(D\)</span> (aka. pixels aka. frequencies aka.
+tokens) in the data, <span class="math inline">\(T \ll D\)</span>. The
+diffusion model hence cannot generate frequencies ‘one-by-one’, and
+rather generates multiple frequencies at the same time. We can also see
+this in the heatmap above: the <em>active</em> frequencies are those
+which have not yet reached the maximum SNR at a given timestep, and the
+active time interval overlaps between frequencies <span class="citation"
+data-cites="gerdes2024gud"><a href="#ref-gerdes2024gud"
+role="doc-biblioref">[15]</a></span>. The order or hierarchy of the
+frequencies is hence ‘soft’, and this is what Sander expresses with the
+classifier ‘approximate’ before ‘spectral autoregression’. In fact, this
+overlap of frequencies is possibly what renders diffusion models
+computationally efficient!</p>
+<h1 class="unnumbered"
+id="does-the-inductive-bias-of-the-forward-process-matter">Does the
+inductive bias of the forward process matter?</h1>
+<p>As we have seen, DDPM has implicitly chosen the order in which
+frequencies are generated, namely—with lots of overlap—from low to high
+frequency. This occurred almost by coincidence: we have chosen a simple,
+white noise distribution for the forward process, and just because the
+data happens to feature the Fourier power law, high frequencies are
+dominated by noise first. If the data distribution had a different
+spectral profile, the same frequency hierarchy would <em>not</em>
+appear. – The natural question to ask is: <em>Is this hierarchy or
+ordering of frequencies necessary</em>? Were we just extremely lucky (or
+perhaps smart) choosing white noise on images (and other modalities)
+which happens to be a beneficial choice? Or do diffusion models still
+work if we do not have this hierarchical structure in Fourier space?</p>
+<h4 id="token-hierarchy-in-llms.">Token hierarchy in LLMs. </h4>
+<p>With an empirical hat on, of course the order in which we process
+frequencies should matter. In autoregressive LLMs, for example, it
+matters and directly impacts performance if we generate a piece of text
+left-to-right (‘causal’), or right-to-left, and where relevant
+information is in a sequence of tokens. This becomes particularly
+apparent in LLMs with long context windows <span class="citation"
+data-cites="liu2023lost"><a href="#ref-liu2023lost"
+role="doc-biblioref">[16]</a></span>. In <a
+href="https://www.youtube.com/watch?v=ktPGNhe11cQ">this video</a>,
+Sander points out that even though we can factorise the joint
+probability into a sequence of conditional probabilities (as we’ve seen
+above) <em>in any order</em>, empirically, we observe that certain
+orders are easier to learn than others. We can call this an
+<em>inductive bias</em>: a design choice which facilitates learning.</p>
+<h4
+id="invariance-of-the-continuous-time-diffusion-loss-to-the-noising-schedule.">Invariance
+of the continuous-time diffusion loss to the noising schedule. </h4>
+<p>Coming back to diffusion models and looking at them in
+continuous-time, the answer might be that the forward process and the
+imposed frequency hierarchy doesn’t matter: Kingma et al. first showed
+that the continuous-time loss (in the formulation of predicting the
+clean data <span class="math inline">\(x_0\)</span>), <span
+class="math display">\[\mathcal{L}_\infty(\mathbf{x}) = \frac{1}{2}
+\mathbb{E}_{\mathbf{\epsilon} \sim \mathcal{N}(\mathbf{0},\mathbf{I})}
+\int_{\text{SNR}_{\text{min}}}^{\text{SNR}_{\text{max}}} \| \mathbf{x}_0
+- \tilde{\mathbf{x}}(\mathbf{x}_t,v)\|_2^2
+\mathrm{d}v,  \label{eq:cont-time-loss}\]</span> is invariant to the
+noising schedule except for its endpoints, namely <span
+class="math inline">\(\text{SNR}_{\text{min}}\)</span>, the SNR at the
+terminal time of the forward process, and <span
+class="math inline">\(\text{SNR}_{\text{max}}\)</span>, the SNR at the
+start time of the forward process <span class="citation"
+data-cites="kingma2021variational"><a href="#ref-kingma2021variational"
+role="doc-biblioref">[17]</a></span>. Kingma et al. later extended this
+to weighted objectives which the most common variant of flow matching,
+recified linear flows, are a special case of <span class="citation"
+data-cites="kingma2023understanding"><a
+href="#ref-kingma2023understanding"
+role="doc-biblioref">[18]</a></span>.</p>
+<p>However, as Kingma et al. also point out, in practice, we need to
+estimate the integral in the equation above via Monte Carlo, using
+random samples of both time <span class="math inline">\(t \sim
+\text{Unif}(0,1)\)</span> and noise <span
+class="math inline">\(\mathbf{\epsilon} \sim
+\mathcal{N}(\mathbf{0},\mathbf{I})\)</span>. Here, the noise schedule
+affects the variance of the Monte Carlo estimate, and consequently, it
+affects how efficiently one can optimise the loss <span class="citation"
+data-cites="kingma2023understanding"><a
+href="#ref-kingma2023understanding"
+role="doc-biblioref">[18]</a></span>.</p>
+<h4 id="a-representation-learning-perspective.">A representation
+learning perspective. </h4>
+<p>From a representation learning perspective, the noise schedule should
+of course makes a difference. Yee Whye Teh nicely summarised the history
+of learning representations in generative models in a recent <a
+href="https://www.youtube.com/watch?v=K7DWWt1EGbQ">talk at the Royal
+Statistical Society</a>. Predecessors of diffusion models focused
+entirely on learning the right representation via an encoder, which the
+decoder’s representation is tied to in a reverse process to enable
+generation. Deep belief networks <span class="citation"
+data-cites="hinton2006fast"><a href="#ref-hinton2006fast"
+role="doc-biblioref">[19]</a></span> and hierarchical VAEs <span
+class="citation" data-cites="falck2022multi child2020very"><a
+href="#ref-falck2022multi" role="doc-biblioref">[20]</a>, <a
+href="#ref-child2020very" role="doc-biblioref">[21]</a></span>, the
+latter I worked with myself, are two examples of such generative model
+families. Diffusion models ‘fix the encoder’, it is governed by the
+forward process, rendering it parameter-free. The encoder’s
+representation is therefore the user’s design choice, but we often do
+not think about it that much in diffusion models (but should,
+particularly when using non-standard data!). Many papers simply choose
+it to be a DDPM forward process (or similar), possibly tuning the <span
+class="math inline">\(\alpha_t\)</span> schedule’s functional shape and
+boundary points. Yet, they all typically choose an encoder
+representation governed by additive white noise, which—as we
+saw—implicitly noises and dominates high-frequency information
+first.</p>
+<h1 class="unnumbered"
+id="why-approximate-spectral-autoregression-might-be-a-good-inductive-bias">Why
+approximate spectral autoregression might be a good inductive bias</h1>
+<p>So we now understood (again) that DDPM diffusion models perform
+approximate spectral autoregression. But why this seemingly arbitrary
+choice of hierarchy, ordering frequencies from low to high during
+generation? Why could this be beneficial from a learning or
+computational efficiency perspective? – There are probably many answers
+to this question, and any list will be incomplete.</p>
+<p>Analysing data across multiple levels has been of interest in
+multi-resolution analysis <span class="citation"
+data-cites="daubechies1992ten stephane1999wavelet"><a
+href="#ref-daubechies1992ten" role="doc-biblioref">[22]</a>, <a
+href="#ref-stephane1999wavelet" role="doc-biblioref">[23]</a></span>,
+where signals are decomposed into a hierarchy of coefficients, each
+corresponding to basis functions (for instance wavelets) of different
+frequency. Multi-resolution analysis forms the backbone of modern
+compression standards such as JPEG-2000.</p>
+<p>Generating data on multiple levels has of course also been of
+interest in machine learning itself. For example, cascaded diffusion
+models comprise of a sequence of diffusion models, each modelling data
+on a different resolution conditional on the previous resolutions <span
+class="citation" data-cites="ho2022cascaded"><a
+href="#ref-ho2022cascaded" role="doc-biblioref">[24]</a></span>. This
+can even be combined with multi-resolution analysis by modelling wavelet
+coefficients directly <span class="citation"
+data-cites="guth2022wavelet"><a href="#ref-guth2022wavelet"
+role="doc-biblioref">[25]</a></span>. Beyond diffusion models,
+multi-scale autoregressive models such as VAR (NeurIPS 2024 Best Paper
+Award) train a transformer on codes retrieved from VQVAE encoders on
+multiple resolutions <span class="citation"
+data-cites="tian2024visual"><a href="#ref-tian2024visual"
+role="doc-biblioref">[26]</a></span>. Learning hierarchically across
+multiple resolutions seems to help empirically, and this is what DDPM
+diffusion models implicitly do.</p>
+<h4
+id="u-nets-exploit-the-frequency-order-of-ddpm-diffusion-models.">U-Nets
+exploit the frequency order of DDPM diffusion models. </h4>
+<p>In my own research, I thought about this question for a while, and
+came up with an answer when using U-Nets as the neural architecture of
+choice in diffusion models. Recall that the U-Net’s task is to discern
+the signal from the noise. Even if it outputs an estimate of the noise
+<span class="math inline">\(\mathbf{\epsilon}\)</span> given the noisy
+image <span class="math inline">\(\mathbf{x}_t\)</span> (the signal plus
+the noise), it always <em>learns the signal</em>. After all, a neural
+network can only learn the signal in the data it is given. It cannot
+learn to predict what the next a sample from a random distribution is,
+because by definition, that sample is random. Following this logic, I
+argue it is easier for the U-Net to produce its output if <em>the signal
+is large relative to the noise</em>.</p>
+<p>Let’s connect this insight with U-Nets. Noise not only dominates the
+high-frequency signal when viewed in a Fourier basis, but also when
+viewed in a wavelet basis. In fact, one can show that the <span
+class="math inline">\(j\)</span>th frequency component of a noisy image
+in a Haar wavelet basis has a variance by a factor <span
+class="math inline">\(2^{j-1}\)</span> higher than the variance of the
+<span class="math inline">\(0\)</span>th component, the lowest or base
+frequency. This variance is induced by the noise of the forward process,
+since the only random variable in our equation for <span
+class="math inline">\(\mathbf{x}_t\)</span> above is the noise <span
+class="math inline">\(\boldsymbol{\epsilon}\)</span>. Again, diffusion
+noise dominates high-frequency information first <span class="citation"
+data-cites="williams2023unified"><a href="#ref-williams2023unified"
+role="doc-biblioref">[27]</a></span>, here when viewed in a Haar wavelet
+basis.</p>
+<p>Why switch to Haar wavelets you might ask? – U-Nets use average
+pooling as a go-to downsampling operation in their encoder. It turns out
+that average pooling is conjugate to Haar wavelet projection (we showed
+this in this paper <span class="citation" data-cites="falck2022multi"><a
+href="#ref-falck2022multi" role="doc-biblioref">[20]</a></span>). This
+means that whenever we perform average pooling, we could equivalently
+take our image (in the standard basis) and do a change of basis to Haar
+wavelets, and there project our image to a lower-resolution Haar wavelet
+subspace, then invert the change of basis. Implicitly, a U-Net with
+average pooling is performing Haar wavelet compression in its encoder,
+going to lower and lower Haar wavelet subspaces.</p>
+<p>A U-Net therefore exploits precisely the noising property of our
+chosen forward process in DDPM. Lower levels of the U-Net correspond to
+low-resolution Haar wavelet spaces, which are less affected by the
+noise, or in other words, where the signal dominates. As we discussed
+above, U-Nets have an easier job discerning the signal from the noise
+here: it’s easier for the U-Net to ‘predict the signal’ if the signal is
+dominant in the input. The U-Net’s inductive bias therefore helps the
+diffusion model to focus its resources on the part of the input which is
+easier to predict (the low frequencies). Since the levels of a U-Net are
+connected via preconditioning (more on this term in the paper <span
+class="citation" data-cites="williams2023unified"><a
+href="#ref-williams2023unified" role="doc-biblioref">[27]</a></span>),
+the U-Net can efficiently learn the signal added on each subspace,
+starting with the easiest (high-signal) frequencies first.</p>
+<h1 class="unnumbered" id="a-hierarchy-free-diffusion-model">A
+hierarchy-free diffusion model</h1>
+<p>In the previous section, we saw several arguments why the low-to-high
+frequency hierarchy in DDPM diffusion on modalities like images, the
+‘approximate spectral autoregression’, could be beneficial in diffusion
+models. Perhaps that’s the secret sauce that makes them work so well. –
+But is it? Is this frequency ordering necessary, or just a choice we
+happened to (implicitly) make? Could other hierarchies, or perhaps no
+hierarchy at all work, too?</p>
+<p>Let’s finally put it to the test. We want to design a forward process
+which noises all frequencies equally fast, instead of noising high
+frequencies faster than low frequencies. To measure the state of
+noising, we naturally use the SNR (the noising speed is its
+change/derivative). So to be precise, we want all frequencies to have
+the same SNR throughout our forward diffusion process. How do we achieve
+this?</p>
+<p>Let’s first look at the SNR of <span
+class="math inline">\(\mathbf{y}_t\)</span>, our noisy Fourier image
+under white Gaussian noise <span class="math inline">\(\mathbf{\epsilon}
+\sim \mathcal{CN}(\mathbf{0}, \mathbf{I})\)</span>. For the <span
+class="math inline">\(i\)</span>th frequency component at diffusion time
+<span class="math inline">\(t\)</span>, we obtain <span
+class="math display">\[\mathsf{SNR}((\mathbf{y}_t)_i) =
+\frac{\overline{\alpha}_t \mathbf{C}_{i}}{1 -
+\overline{\alpha}_t},\]</span> where <span
+class="math inline">\(\mathbf{C}_{i} :=
+\mathrm{Var}((\mathbf{y}_0)_i)\)</span> represents the signal variance
+of frequency <span class="math inline">\(i\)</span> in Fourier space.
+The <span class="math inline">\(\mathbf{C}\)</span> matrix is exactly
+the heatmap we visualised in Figure 2 when we first looked at signal
+variance.</p>
+<p>The key idea now is that instead of using white noise, we draw from a
+coloured noise distribution <span
+class="math inline">\(\mathbf{\epsilon} \sim \mathcal{CN}(\mathbf{0},
+\mathbf{\Sigma})\)</span>. Again, we can compute the SNR for the <span
+class="math inline">\(i\)</span>th component as <span
+class="math display">\[\mathsf{SNR}((\mathbf{y}_t)_i) = \frac{\overline
+\alpha_t \mathbf{C}_i}{(1 - \overline \alpha_t)
+\mathbf{\Sigma}_{ii}}.\]</span> To achieve the same SNR across all
+frequencies, we can choose the diagonal entry of the noise covariance
+matrix as <span class="math inline">\(\mathbf{\Sigma}_{ii}=c
+\mathbf{C}_i\)</span>, where <span class="math inline">\(c\)</span> is a
+constant. If we choose <span class="math inline">\(c=1\)</span>, the
+process is variance-preserving. To the best of my knowledge, this
+noising schedule was first proposed but not experimentally tested in
+<span class="citation" data-cites="gerdes2024gud"><a
+href="#ref-gerdes2024gud" role="doc-biblioref">[15]</a></span>. We plot
+the signal and noise variance for this schedule which we call
+<em>EqualSNR</em> (because its SNR is equal for all frequencies, at all
+timesteps), in Figure 7.</p>
+
+<figure id="fig:equalsnr_gif">
+  <img 
+    src="/spectralauto/Figures/gifs/equalsnr.gif" 
+    alt="EqualSNR forward process animation" 
+    style="width:80%; display:block; margin:1rem auto;"
+  />
+<figcaption>Figure 7. The alternate EqualSNR forward process <em>noises
+  all frequencies at the same rate</em>, disrupting DDPM’s generation
+  hierarchy. 
+</figcaption>
+</figure>
+
+<p>Let’s look at how this forward process qualitatively looks like in
+Figure 8. We again consider low- and high-pass filtered images during an
+EqualSNR forward and backward process, complementing the same
+illustration for DDPM we already looked at. For EqualSNR, both high- and
+low-frequency information are vanishing all at the same time in the
+forward process – well, at least sort of. In the reverse process, low-
+and high-frequencies are likewise being generated at the same rate.
+Importantly, this diffusion model is <em>hierarchy-free</em> <span
+class="citation" data-cites="gerdes2024gud"><a href="#ref-gerdes2024gud"
+role="doc-biblioref">[15]</a></span>: its frequencies are not generated
+in a certain order, it is not ‘autoregressive’ or ‘hierarchy-imposing’
+in this sense, but the frequency components are generated all at the
+same time, equally fast.</p>
+<figure>
+<img src="/spectralauto/Figures/fwd-bwd-high-low_v3_ddpm_equalsnr.png" />
+<figcaption>Figure 8. Low- and high-pass filtered images of the forward and
+backward process of an EqualSNR diffusion model.</figcaption>
+</figure>
+<p>What about quantitatively (Figure 9)? In the forward process, at any
+time step, the SNR is now equal across all frequencies (by design). Once
+again, the reverse process mirrors the forward process, as we see from
+our SNR proxy measure on the right. The diffusion model hence generates
+all frequencies at the same time, there is no hierarchy or soft ordering
+among the frequencies anymore.</p>
+<figure id="fig:snr_heatmaps_equalsnr">
+<div class="minipage">
+<p><img src="/spectralauto/Figures/snr_heatmap_equalsnr.png" alt="image" /> <span
+id="fig:equal-snr" data-label="fig:equal-snr"></span></p>
+</div>
+<figcaption>Figure 6: <em>Figure 9. The alternate EqualSNR in Fourier space (dB
+scale).</em> Here, all frequencies are corrupted equally fast, achieving
+the same SNR of all frequencies at each timestep. In the forward
+process, SNR is computed as a Monte Carlo estimate of the SNR on CIFAR10
+(referring to the paper for details on the reverse process).
+</figcaption>
+</figure>
+<p>But what about performance? Can a diffusion model with an EqualSNR
+noising schedule, even though it is not performing ‘approximate spectral
+autoregression’, perform as well as a DDPM diffusion mdoel?
+<strong>Perhaps surprisingly to some, the answer is: Yes, it
+can!</strong></p>
+<p>Table 1 shows (Clean-)FID values of diffusion models trained with
+DDPM and EqualSNR on imaging datasets of different resolution <a
+href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a>. The FID scores are rather
+comparable between DDPM and EqualSNR. So even though we have no
+hierarchy in an EqualSNR diffusion model, it works just as well as DDPM.
+Of course, these results are limited, and would have to be validated
+with more models and further modalities, too. But what we can conclude
+is that approximate spectral autoregression is not a necessity. It is an
+(implicit) choice we made, but other noising schedules with different
+inductive biases can work just as well.</p>
+<div id="tab:results_all-schedules">
+<table>
+<caption>Table 1. EqualSNR performs on par with DDPM on imaging datasets. We
+measure performance using Clean-FID (<span
+class="math inline">\(\downarrow\)</span>) <span class="citation"
+data-cites="parmar2021cleanfid"><a href="#ref-parmar2021cleanfid"
+role="doc-biblioref">[28]</a></span>. </caption>
+<tbody>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td colspan="4" style="text-align: center;"><strong>CIFAR10 (32 <span
+class="math inline">\(\times\)</span> 32)</strong></td>
+<td colspan="4" style="text-align: center;"><strong>CelebA (64 <span
+class="math inline">\(\times\)</span> 64)</strong></td>
+<td colspan="4" style="text-align: center;"><strong>LSUN Church (128
+<span class="math inline">\(\times\)</span> 128)</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(T\)</span></td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">200</td>
+<td style="text-align: center;">1000</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">200</td>
+<td style="text-align: center;">1000</td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">200</td>
+<td style="text-align: center;">1000</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">DDPM schedule</td>
+<td style="text-align: center;">18.63</td>
+<td style="text-align: center;">18.01</td>
+<td style="text-align: center;">17.68</td>
+<td style="text-align: center;">17.7</td>
+<td style="text-align: center;">10.10</td>
+<td style="text-align: center;">8.72</td>
+<td style="text-align: center;">8.30</td>
+<td style="text-align: center;">8.62</td>
+<td style="text-align: center;">29.36</td>
+<td style="text-align: center;">25.36</td>
+<td style="text-align: center;">24.03</td>
+<td style="text-align: center;">23.22</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">EqualSNR (calibrated) schedule</td>
+<td style="text-align: center;">16.00</td>
+<td style="text-align: center;">15.91</td>
+<td style="text-align: center;">15.76</td>
+<td style="text-align: center;">15.73</td>
+<td style="text-align: center;">9.45</td>
+<td style="text-align: center;">8.79</td>
+<td style="text-align: center;">8.62</td>
+<td style="text-align: center;">8.56</td>
+<td style="text-align: center;">19.42</td>
+<td style="text-align: center;">19.75</td>
+<td style="text-align: center;">19.90</td>
+<td style="text-align: center;">19.80</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">DDPM (calibrated) schedule</td>
+<td style="text-align: center;">16.64</td>
+<td style="text-align: center;">14.69</td>
+<td style="text-align: center;">14.07</td>
+<td style="text-align: center;">13.85</td>
+<td style="text-align: center;">12.65</td>
+<td style="text-align: center;">7.88</td>
+<td style="text-align: center;">6.54</td>
+<td style="text-align: center;">6.59</td>
+<td style="text-align: center;">40.31</td>
+<td style="text-align: center;">26.4</td>
+<td style="text-align: center;">22.05</td>
+<td style="text-align: center;">20.09</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">EqualSNR schedule</td>
+<td style="text-align: center;">15.44</td>
+<td style="text-align: center;">14.56</td>
+<td style="text-align: center;">14.13</td>
+<td style="text-align: center;">13.63</td>
+<td style="text-align: center;">12.99</td>
+<td style="text-align: center;">11.64</td>
+<td style="text-align: center;">10.96</td>
+<td style="text-align: center;">10.37</td>
+<td style="text-align: center;">27.13</td>
+<td style="text-align: center;">25.68</td>
+<td style="text-align: center;">24.81</td>
+<td style="text-align: center;">24.05</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 class="unnumbered"
+id="fast-noising-in-ddpm-deteriorates-high-frequency-performance">Fast
+noising in DDPM deteriorates high-frequency performance</h1>
+<p>The hierarchy-free EqualSNR forward process seems to perform on par
+with DDPM, at least for images and looking at Clean-FID. But can it give
+us any gain? – One advantage is that it can produce better generation
+quality of high-frequency information, and this is what the paper
+focuses.</p>
+<p>The intuition is very simple: in DDPM, since we add white noise to
+data which follows a Fourier power law, we not only noise
+high-frequencies first but also <em>faster</em>, in the sense that per
+discrete time increment, the SNR for high-frequency components deceases
+faster than for low-frequency components. As a consequence, the
+diffusion model spends less timesteps generating high-frequency
+components. Since the model’s capacity is limited and its weights are
+shared across all timesteps, high-frequency components have a lower
+generation quality than low-frequency components, and (I hypothesise
+that) FID might not capture this.</p>
+<p>One consequence of the fast noising of high-frequency components is
+that the Gaussian assumption which DDPM makes on the (intractable)
+reverse process distribution <span
+class="math inline">\(q(\mathbf{y}_{t-1} \mid \mathbf{y}_t)\)</span>,
+which <span
+class="math inline">\(p_\theta(\mathbf{y}_{t-1}|\mathbf{y}_t)\)</span>
+approximates, is violated. This may be a theoretical explanation for
+lower generation quality of high-frequencies in DDPM.</p>
+<p>To see this, we first apply Bayes rule <span
+class="math display">\[\label{eq:fwd_bayes}
+q(\mathbf{y}_{t-1} | \mathbf{y}_t) = \frac{q(\mathbf{y}_t |
+\mathbf{y}_{t-1}) q(\mathbf{y}_{t-1})}{q(\mathbf{y}_t)}.\]</span> For
+high-frequency components, <span class="math inline">\(q(\mathbf{y}_t |
+\mathbf{y}_{t-1})\)</span> has a large variance relative to <span
+class="math inline">\(q(\mathbf{y}_{t-1})\)</span> and <span
+class="math inline">\(q(\mathbf{y}_t)\)</span>. As a consequence,
+fluctuations in the quantity <span
+class="math inline">\(\frac{q(\mathbf{y}_{t-1})}{q(\mathbf{y}_t)}\)</span>
+are more apparent in the distribution <span
+class="math inline">\(q(\mathbf{y}_{t-1}|\mathbf{y}_t)\)</span>. One can
+formalise this (see Proposition 1 in the paper). Here, I rather want to
+focus on intuition and illustrate this observation in Figure 10 for a
+low-frequency [top] and a high-frequency [bottom] for DDPM [left]. Note
+the spiky<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a> behaviour of the estimate of <span
+class="math inline">\(q(\mathbf{y}_{t-1} | \mathbf{y}_t)\)</span> in the
+high frequency, which somewhat deviates from a Gaussian. Since EqualSNR
+noises all frequencies at the same rate (in terms of SNR), it noises the
+high-frequencies, which were noised the fastest before, less fast.
+Consequently, this problematic behaviour does not appear here.</p>
+<figure id="fig:gauss_assumption">
+<img src="/spectralauto/Figures/gauss_assumption_v3.png"
+alt="Figure 10: Fast noising of high frequencies leads to violations of normality in the DDPM reverse process. We plot Monte Carlo estimates of q(\mathbf{y}_t) = \mathbb{E}_{\mathbf{y}_0 \sim q(\mathbf{y}_0)} q(\mathbf{y}_t | \mathbf{y}_0) (and similarly for q(\mathbf{y}_{t-1})) as histograms. " />
+<figcaption aria-hidden="true">Figure 7: Fast noising of high
+frequencies leads to violations of normality in the DDPM reverse
+process. We plot Monte Carlo estimates of <span
+class="math inline">\(q(\mathbf{y}_t) = \mathbb{E}_{\mathbf{y}_0 \sim
+q(\mathbf{y}_0)} q(\mathbf{y}_t | \mathbf{y}_0)\)</span> (and similarly
+for <span class="math inline">\(q(\mathbf{y}_{t-1})\)</span>) as
+histograms. </figcaption>
+</figure>
+<p>So we would expect that EqualSNR has a better generation quality for
+high frequencies. To put this to the test, we train two diffusion
+models, one with a DDPM and one with an EqualSNR forward process,
+otherwise all things equal (as before). We simulate a dataset where
+high-frequency information is dominant: black images with a few white
+pixels (between 46 and 50 to be precise). Now here is the surprising
+insight: ‘by eye’, we can observe differences in the spectral magnitude
+profile of generated images contrasting the DDPM and EqualSNR diffusion
+model. While the EqualSNR model’s spectral magnitude distribution
+approximately overlaps with the real data distribution, for DDPM, there
+is a clear deviation in high frequencies, while for low frequencies, the
+profiles of real and synthetic data roughly overlap. Related work
+similarly observed that high-frequency generation quality suffers in
+current diffusion models <span class="citation"
+data-cites="yang2023diffusion"><a href="#ref-yang2023diffusion"
+role="doc-biblioref">[29]</a></span>.</p>
+<p>Since high-frequency information is dominant in this dataset, we can
+also observe the impact of this deviation on the quantity of interest,
+here the number of white pixels. The distribution of white pixels in the
+generated samples has a mean is shifted and off from the ground-truth
+number of pixels in the dataset (46 to 50).</p>
+<p>In natural images, such differences may not matter, because the human
+eye cares mostly about getting low frequency information right. But what
+if we consider data where high-frequency information is key, such as
+astronomy images, aerial images, or medical images such as MRI? Should
+we adapt our noising schedules to better accommodate the
+(high-frequency) data characteristics of such datasets? And what are the
+implications of (largely) not doing so until now? Furthermore, can we
+maybe use this insight to detect synthetically generated diffusion
+samples in the Fourier domain more easily (in the context of
+watermarking)? And, if we use EqualSNR, might it be harder to detect
+DeepFakes? – These are some of the questions raised by the paper.</p>
+<h1 class="unnumbered" id="does-any-forward-process-work">Does any
+forward process work?</h1>
+<p>We found that EqualSNR, a schedule with no hierarchical order in
+Fourier space, works well, even better than DDPM for high-frequency
+generation. The obvious question to ask is: does any schedule work well,
+akin to the invariance of the continuos-time loss to the noising
+schedule?</p>
+<p>One thing we tried was to flip the frequency order in DDPM: noise
+low-frequency components first, and consequently generate high-frequency
+before low-frequency components. More precisely, this schedule noises
+the data such that the <span class="math inline">\(i\)</span>th
+frequency has the same SNR as the <span
+class="math inline">\(D-i\)</span>th frequency in DDPM. We call this
+schedule <em>FlippedSNR</em>, and illustrate it with our usual plot in
+Figure 11.</p>
+
+<figure id="fig:flipped-snr-gif">
+  <img 
+    src="/spectralauto/Figures/gifs/flippedsnr.gif" 
+    alt="FlippedSNR forward process animation" 
+    style="width:80%; display:block; margin:1rem auto;"
+  />
+<figcaption>Figure 11. The alternate FlippedSNR forward process noises
+  <em>low-frequency</em> components before, and faster than high-frequency
+  components, flipping the SNR profile of DDPM.
+</figcaption>
+</figure>
+
+<p>Surprisingly, this schedule doesn’t work. I’m not fully sure why, we
+tried it with a couple of <span class="math inline">\(\alpha_t\)</span>
+schedules and other hyperparameter choices but then moved on. A possible
+explanation: in FlippedSNR, we noise low frequencies faster than high
+frequencies, spending less resources on them. Maybe this deteriorates
+training. Another possible explanation is that maybe the low- to
+high-frequency is at least partially important: maybe high-frequency
+information needs at least partial low-frequency information to generate
+those frequencies efficiently, as is the case in EqualSNR.</p>
+<p>Worth highlighting is also the recent work from my collaborators
+Chris Williams and Saif Syed in Oxford. They derive forward processes
+which are optimal with respect to a cost that measures the work to
+transport samples along the diffusion path <span class="citation"
+data-cites="williams2024score"><a href="#ref-williams2024score"
+role="doc-biblioref">[30]</a></span>. Clearly, not any noising schedule
+works equally well in practice, and their performance can differ a
+lot.</p>
+<h1 class="unnumbered" id="closing-thoughts">Closing thoughts</h1>
+<p>In this blog post, we revisited what approximate spectral
+autoregression means in DDPM diffusion models, discussed why this might
+be a beneficial inductive bias, and showed that a hierarchy-free
+diffusion model, which has no ordering of frequencies and is not
+approximately autoregressive in Fourier space, works as well as DDPM and
+even better for high-frequency generation. Most importantly, the
+preliminary results on images showed that spectral autoregression is
+perhaps not a necessity for diffusion models to work well.</p>
+<p>If it’s not the ordering frequencies, which was induced by the data
+distributions diffusion models are often used for, what is it that makes
+diffusion models work well? – Well, that’s the million dollar question.
+Perhaps it is just the ability of diffusion models to iteratively refine
+a continuous latent state <span class="citation"
+data-cites="dieleman2023language"><a href="#ref-dieleman2023language"
+role="doc-biblioref">[31]</a></span>, similar to latent reasoning in
+LLMs. Since diffusion models use weight-sharing across timesteps, this
+is a form of self-iteration which I recently explored in the context of
+LLMs and yields—if one converges towards a fixed-point—performance gains
+<span class="citation" data-cites="schone2025implicit"><a
+href="#ref-schone2025implicit" role="doc-biblioref">[32]</a></span>. I
+don’t have a conclusive answer, and future research will tell.</p>
+<p><em>   
+Thoughts? Ideas? Questions? Feedback? -- I'd love to hear from you! </em>
+</p>
+<h1 class="unnumbered" id="citation">Citation</h1>
+<p>If you would like to cite this blog post, you can use:</p>
+<pre><code>@misc{falck2025spectralauto,
+  author = {Falck, Fabian},
+  title = {Diffusion is not necessarily spectral autoregression},
+  url = {https://fabianfalck.com/posts/spectralauto},
+  year = {2025}
+}</code></pre>
+<p>You may also want to cite the paper accompanying this blog post:</p>
+<pre><code>@misc{falck2025fourier,
+  title = {A Fourier Space Perspective on Diffusion Models},
+  author = {Falck, Fabian and Pandeva, Teodora and Zahirnia, Kiarash and Lawrence, Rachel and Turner, Richard E. and Meeds, Edward and Zazo, Javier and Karmalkar, Sushrut},
+  url = {https://arxiv.org/abs/2505.11278},
+  year = {2025}
+}</code></pre>
+<h2 class="unnumbered" id="acknowledgements">Acknowledgements</h2>
+<p>I would like to thank my co-authors at Microsoft Research on the
+paper accompanying this blog post: Teodora Pandeva, Kiarash Zahirnia,
+Rachel Lawrence, Richard E. Turner, Edward Meeds, Javier Zazo, and
+Sushrut Karmalkar. They drove this work, and produced and elicited the
+majority of the thoughts discussed in this blog post.</p>
+<p>I would like to acknowledge Sander Dieleman and his blog post <a
+href="https://sander.ai/2024/09/02/spectral-autoregression.html">Diffusion
+is spectral autoregression</a> which motivated this blog post. Some of
+the figures presented above are inspired by him and use the code
+accompanying the post.</p>
+<p>I would also like to thank my colleague Markus Heinonen who I had
+many interesting conversations with on this and related topics at
+conferences over the years. The work by Markus and his colleagues
+inspired Sander’s post, so did it inspire this one.</p>
+<p>I would further like to thank my collaborators back at Oxford,
+particularly Chris Williams and Saif Syed, Matthew Willetts, Chris
+Holmes and Arnaud Doucet, who I closely worked with during my PhD and
+where many of the thoughts and questions in this post originate
+from.</p>
+<p>I would like to thank my colleagues Sam Bond-Taylor, Rachel Lawrence,
+Teodora Pandeva, Ted Meeds and Fernando Pérez-García for proofreading
+this blog post.</p>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0"
+role="list">
+<div id="ref-rombach2022high" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R.
+Rombach, A. Blattmann, D. Lorenz, P. Esser, and B. Ommer,
+<span>“High-resolution image synthesis with latent diffusion
+models,”</span> in <em>Proceedings of the IEEE/CVF conference on
+computer vision and pattern recognition</em>, 2022, pp.
+10684–10695.</div>
+</div>
+<div id="ref-baldridge2024imagen" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">J.
+Baldridge <em>et al.</em>, <span>“Imagen 3,”</span> <em>arXiv preprint
+arXiv:2408.07009</em>, 2024.</div>
+</div>
+<div id="ref-videoworldsimulators2024" class="csl-entry"
+role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">T.
+Brooks <em>et al.</em>, <span>“Video generation models as world
+simulators,”</span> 2024, Available: <a
+href="https://openai.com/research/video-generation-models-as-world-simulators">https://openai.com/research/video-generation-models-as-world-simulators</a></div>
+</div>
+<div id="ref-watson2023novo" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">J.
+L. Watson <em>et al.</em>, <span>“De novo design of protein structure
+and function with RFdiffusion,”</span> <em>Nature</em>, vol. 620, no.
+7976, pp. 1089–1100, 2023.</div>
+</div>
+<div id="ref-lewis2024scalable" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">S.
+Lewis <em>et al.</em>, <span>“Scalable emulation of protein equilibrium
+ensembles with generative deep learning,”</span> <em>bioRxiv</em>, pp.
+2024–12, 2024.</div>
+</div>
+<div id="ref-zeni2023mattergen" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">C.
+Zeni <em>et al.</em>, <span>“Mattergen: A generative model for inorganic
+materials design,”</span> <em>arXiv preprint arXiv:2312.03687</em>,
+2023.</div>
+</div>
+<div id="ref-field1987relations" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">D.
+J. Field, <span>“Relations between the statistics of natural images and
+the response properties of cortical cells,”</span> <em>Journal of the
+Optical Society of America A</em>, vol. 4, no. 12, pp. 2379–2394,
+1987.</div>
+</div>
+<div id="ref-van1996modelling" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">van
+A. Van der Schaaf and J. van van Hateren, <span>“Modelling the power
+spectra of natural images: Statistics and information,”</span>
+<em>Vision research</em>, vol. 36, no. 17, pp. 2759–2770, 1996.</div>
+</div>
+<div id="ref-rissanen2022generative" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">S.
+Rissanen, M. Heinonen, and A. Solin, <span>“Generative modelling with
+inverse heat dissipation,”</span> <em>arXiv preprint
+arXiv:2206.13397</em>, 2022.</div>
+</div>
+<div id="ref-krizhevsky2009learning" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">A.
+Krizhevsky, G. Hinton, <em>et al.</em>, <span>“Learning multiple layers
+of features from tiny images,”</span> 2009.</div>
+</div>
+<div id="ref-kay2017kinetics" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">W.
+Kay <em>et al.</em>, <span>“The kinetics human action video
+dataset,”</span> <em>arXiv preprint arXiv:1705.06950</em>, 2017.</div>
+</div>
+<div id="ref-gtanz1999music" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">G.
+Tzanetakis, <span>“GTZAN music/speech collection.”</span> [Online].
+Available: <a
+href="http://marsyas.info/index.html">http://marsyas.info/index.html</a></div>
+</div>
+<div id="ref-wwpdb2024emdb" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">T.
+wwPDB Consortium, <span>“EMDB—the electron microscopy data bank,”</span>
+<em>Nucleic Acids Research</em>, vol. 52, no. D1, pp. D456–D465, Nov.
+2023, doi: <a
+href="https://doi.org/10.1093/nar/gkad1019">10.1093/nar/gkad1019</a>.</div>
+</div>
+<div id="ref-jiralerspong2025shaping" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">T.
+Jiralerspong, B. Earnshaw, J. Hartford, Y. Bengio, and L. Scimeca,
+<span>“Shaping inductive bias in diffusion models through
+frequency-based noise control,”</span> <em>arXiv preprint
+arXiv:2502.10236</em>, 2025.</div>
+</div>
+<div id="ref-gerdes2024gud" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">M.
+Gerdes, M. Welling, and M. C. Cheng, <span>“GUD: Generation with unified
+diffusion,”</span> <em>arXiv preprint arXiv:2410.02667</em>, 2024.</div>
+</div>
+<div id="ref-liu2023lost" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline">N.
+F. Liu <em>et al.</em>, <span>“Lost in the middle: How language models
+use long contexts,”</span> <em>arXiv preprint arXiv:2307.03172</em>,
+2023.</div>
+</div>
+<div id="ref-kingma2021variational" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">D.
+Kingma, T. Salimans, B. Poole, and J. Ho, <span>“Variational diffusion
+models,”</span> <em>Advances in neural information processing
+systems</em>, vol. 34, pp. 21696–21707, 2021.</div>
+</div>
+<div id="ref-kingma2023understanding" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">D.
+Kingma and R. Gao, <span>“Understanding diffusion objectives as the elbo
+with simple data augmentation,”</span> <em>Advances in Neural
+Information Processing Systems</em>, vol. 36, pp. 65484–65516,
+2023.</div>
+</div>
+<div id="ref-hinton2006fast" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline">G.
+E. Hinton, S. Osindero, and Y.-W. Teh, <span>“A fast learning algorithm
+for deep belief nets,”</span> <em>Neural computation</em>, vol. 18, no.
+7, pp. 1527–1554, 2006.</div>
+</div>
+<div id="ref-falck2022multi" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline">F.
+Falck <em>et al.</em>, <span>“A multi-resolution framework for u-nets
+with applications to hierarchical VAEs,”</span> <em>Advances in Neural
+Information Processing Systems</em>, vol. 35, pp. 15529–15544,
+2022.</div>
+</div>
+<div id="ref-child2020very" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline">R.
+Child, <span>“Very deep vaes generalize autoregressive models and can
+outperform them on images,”</span> <em>arXiv preprint
+arXiv:2011.10650</em>, 2020.</div>
+</div>
+<div id="ref-daubechies1992ten" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline">I.
+Daubechies, <em>Ten lectures on wavelets</em>. SIAM, 1992.</div>
+</div>
+<div id="ref-stephane1999wavelet" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline">M.
+Stephane, <span>“A wavelet tour of signal processing.”</span> Elsevier,
+1999.</div>
+</div>
+<div id="ref-ho2022cascaded" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline">J.
+Ho, C. Saharia, W. Chan, D. J. Fleet, M. Norouzi, and T. Salimans,
+<span>“Cascaded diffusion models for high fidelity image
+generation,”</span> <em>Journal of Machine Learning Research</em>, vol.
+23, no. 47, pp. 1–33, 2022.</div>
+</div>
+<div id="ref-guth2022wavelet" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline">F.
+Guth, S. Coste, V. De Bortoli, and S. Mallat, <span>“Wavelet score-based
+generative modeling,”</span> <em>Advances in neural information
+processing systems</em>, vol. 35, pp. 478–491, 2022.</div>
+</div>
+<div id="ref-tian2024visual" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline">K.
+Tian, Y. Jiang, Z. Yuan, B. Peng, and L. Wang, <span>“Visual
+autoregressive modeling: Scalable image generation via next-scale
+prediction,”</span> <em>Advances in neural information processing
+systems</em>, vol. 37, pp. 84839–84865, 2024.</div>
+</div>
+<div id="ref-williams2023unified" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline">C.
+Williams, F. Falck, G. Deligiannidis, C. C. Holmes, A. Doucet, and S.
+Syed, <span>“A unified framework for u-net design and analysis,”</span>
+<em>Advances in Neural Information Processing Systems</em>, vol. 36, pp.
+27745–27782, 2023.</div>
+</div>
+<div id="ref-parmar2021cleanfid" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline">G.
+Parmar, R. Zhang, and J.-Y. Zhu, <span>“On aliased resizing and
+surprising subtleties in GAN evaluation,”</span> in <em>CVPR</em>,
+2022.</div>
+</div>
+<div id="ref-yang2023diffusion" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[29] </div><div class="csl-right-inline">X.
+Yang, D. Zhou, J. Feng, and X. Wang, <span>“Diffusion probabilistic
+model made slim,”</span> in <em>Proceedings of the IEEE/CVF conference
+on computer vision and pattern recognition</em>, 2023, pp.
+22552–22562.</div>
+</div>
+<div id="ref-williams2024score" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[30] </div><div class="csl-right-inline">C.
+Williams, A. Campbell, A. Doucet, and S. Syed, <span>“Score-optimal
+diffusion schedules,”</span> <em>arXiv preprint arXiv:2412.07877</em>,
+2024.</div>
+</div>
+<div id="ref-dieleman2023language" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[31] </div><div class="csl-right-inline">S.
+Dieleman, <span>“Diffusion language models.”</span> 2023. Available: <a
+href="https://benanne.github.io/2023/01/09/diffusion-language.html">https://benanne.github.io/2023/01/09/diffusion-language.html</a></div>
+</div>
+<div id="ref-schone2025implicit" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[32] </div><div class="csl-right-inline">M.
+Schöne, B. Rahmani, H. Kremer, F. Falck, H. Ballani, and J. Gladrow,
+<span>“Implicit language models are RNNs: Balancing parallelization and
+expressivity,”</span> <em>arXiv preprint arXiv:2502.07827</em>,
+2025.</div>
+</div>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Note that this figure differs slightly from a similar
+illustration in Sander’s blog post: he computed the radially averaged
+power spectral density (RAPSD), averaging coefficients from centre to
+the outside in all angular directions, while we sort the dimension-wise
+signal variances themselves using the Manhattan distance. Qualitatively,
+both approaches show the same insight. I prefer sorting the signal
+variances, because 1) they are directly connected to the Signal-to-Noise
+Ratio (SNR) that governs the inductive bias of the diffusion (they are
+the numerator of the SNR), and 2) this sorting naturally extends to 1D
+and 3D data, such as images and video.<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Note two subtle differences when comparing the similarly
+looking figure in Sander’s blog post: First, we scale the signal
+variance with time as it is scaled under the forward diffusion process.
+In Sander’s blog post, the red line, which shows the RAPSD, does not
+change with diffusion time (while the noise does). Second, the green
+line is the SNR, while in Sander’s post, the green line is the RAPSD of
+the signal <em>plus</em> the noise. But again, qualitatively, both
+illustrate the same insight: a hierarchy of how frequencies are noised
+in Fourier space.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>We calibrated the noise schedules to each other so that
+they have the same SNR averaged over all frequencies, at all timesteps
+(details in the paper).<a href="#fnref3" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The spiky-ness of the KDE estimate for <span
+class="math inline">\(q(\mathbf{y}_{t-1} | \mathbf{y}_t)\)</span> is
+governed by a bandwidth parameter, but qualitatively, the phenomenon
+always holds true.<a href="#fnref4" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>

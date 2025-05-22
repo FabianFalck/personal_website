@@ -1,0 +1,43 @@
+/* -------------------------------------------------
+   style.css  –  Minimal fixes for raw Pandoc HTML
+   (1) bump base text size
+   (2) keep images from dwarfing the text column
+   (3) give MathJax display equations some spacing
+   (4) centre figure captions (works with pandoc-crossref)
+--------------------------------------------------*/
+
+/* 1 ▸ Larger, readable body text ----------------- */
+:root{
+    font-size: 18px;        /* default was 16px */
+  }
+  body{
+    line-height: 2.0;       /* improve vertical rhythm */
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    max-width: 800px;           /* limits content width */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;         /* extra space on small screens */
+    padding-right: 2rem;
+  }
+  
+  /* 2 ▸ Tame oversized images ---------------------- */
+  img{
+    max-width: 100%;         /* never spill out of column */
+    height: auto;           /* keep aspect ratio */
+    display: block;
+    margin: 1rem auto;      /* centre & add a little space */
+  }
+  
+  /* 3 ▸ Space around display maths ----------------- */
+  /* MathJax (v3) wraps block equations in <mjx-container>. */
+  mjx-container[display="true"]{
+    margin: 1.2rem 0;       /* small top/bottom gap */
+  }
+  
+  /* 4 ▸ Clean figure captions ---------------------- */
+  figure{ text-align: center; }
+  figcaption{
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+    color: #444;
+  }
