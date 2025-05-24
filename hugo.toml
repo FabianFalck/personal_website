@@ -20,6 +20,8 @@ home = "Home"
 
 [params]
 
+theme = 'light'
+
 homeIntroTitle = "Bio"
 homeIntroContent = """
 Hi and welcome! I am Fabian - great to have you here!
@@ -51,7 +53,6 @@ showFooter = false
 description = "Fabian Falck's personal website"
 
 # faviconPath = 'static/favicon'
-
 
 [[params.social]]
 name = "googlescholar"
