@@ -57,7 +57,20 @@ description: "TODO"
 <body>
 <header id="title-block-header">
 </header>
+
+<div style="border: 1px solid black; max-width: 100%; margin: 0 auto; padding: 1em; text-align: justify;">
+<b>tl;dr.</b> DDPM diffusion models perform approximate autoregression in the Fourier domain, generating components from low to high frequency, 
+but this inductive bias is <em>not</em> a necessity: diffusion models without any frequency hierarchy can perform equally well, and demonstrate improved high-frequency generation quality.
+</div>
+
 <p>In this blog post, we want to answer the question:</p>
+
+<div style="border: 1px solid black; max-width: 100%; margin: 0 auto; padding: 1em; text-align: justify;">
+<b>Research question.</b>
+Is <em>approximate spectral autoregression</em>, noising high-frequency components first, 
+and consequently generating low-frequency before high-frequency components, a necessity in diffusion models?
+</div>
+
 <p>As the title suggests, this blog post directly responds to Sander
 Dieleman’s blog post <a
 href="https://sander.ai/2024/09/02/spectral-autoregression.html">‘Diffusion
@@ -76,6 +89,15 @@ perspective, qualitatively using exactly his argument, but trying to
 augment it with my own discussion and some new figures. Up front, I want
 to explain the notion of approximate spectral autoregression, because it
 is central to Sander’s post.</p>
+
+<div style="border: 1px solid black; max-width: 100%; margin: 0 auto; padding: 1em; text-align: justify;">
+<b>Definition: Approximate spectral autoregression.</b> This term pointedly characterises the observation 
+that in diffusion models with a DDPM forward process, frequency components (in Fourier space) are generated 
+with a `soft' order or hierarchy: low frequencies have a higher SNR throughout the entire reverse process 
+than high frequencies. Diffusion models are hence similar to an autoregressive model in Fourier space, which 
+generate frequency components in a certain order (e.g. low to high), one at a time. 
+</div>
+
 <p>We will understand this definition carefully in the now following
 first part of this blog post.</p>
 <h1 class="unnumbered"
