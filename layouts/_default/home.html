@@ -43,7 +43,7 @@
     <!-- Right column: text + blog -->
     <div style="flex: 3 1 0;">
         {{ with .Site.Params.homeIntroTitle }}
-        <h1>{{ . }}</h1>
+        <h1 style="margin-top: 0rem;">{{ . }}</h1>
         {{ end }}
         {{ with .Site.Params.homeIntroContent }}
         <div>{{ . | markdownify }}</div>
