@@ -2,6 +2,23 @@
 
 {{ .Content }}
 
+{{/* Add responsive styling */}}
+<style>
+  @media (max-width: 768px) {
+    .intro {
+      flex-direction: column !important;
+      width: 90vw !important;
+      gap: 2rem !important;
+    }
+    .intro > div {
+      width: 100% !important;
+    }
+    .intro img {
+      margin-top: 2rem !important;
+    }
+  }
+</style>
+
 {{/* Intro summary section */}}
 {{ if or .Site.Params.homeIntroTitle .Site.Params.homeIntroContent }}
 <div class="intro"
