@@ -153,8 +153,8 @@ viewed it recently in the context of diffusion models. But where does
 this notion of <em>frequency</em> come from?</p>
 <figure id="fig:c_matrix">
 <img src="/spectralauto/Figures/C_matrix.png"
-alt="Figure 1: The signal variance \mathbf{C} in Fourier space (magnitude) on a \log_{10} scale for the CIFAR10 [left] and CelebA [right] dataset. For visualisation purposes, the largest value plotted in bright yellow corresponds to a value larger or equal to the .95-quantile of \mathbf{C}. " />
-<figcaption aria-hidden="true">Figure 1: The signal variance <span
+alt="Figure 2: The signal variance \mathbf{C} in Fourier space (magnitude) on a \log_{10} scale for the CIFAR10 [left] and CelebA [right] dataset. For visualisation purposes, the largest value plotted in bright yellow corresponds to a value larger or equal to the .95-quantile of \mathbf{C}. " />
+<figcaption aria-hidden="true">Figure 2: The signal variance <span
 class="math inline">\(\mathbf{C}\)</span> in Fourier space (magnitude)
 on a <span class="math inline">\(\log_{10}\)</span> scale for the
 CIFAR10 [left] and CelebA [right] dataset. For visualisation purposes,
@@ -212,7 +212,7 @@ well for.</p>
 <figure id="fig:fig1">
 <img src="/spectralauto/Figures/modalities_fourier/powerlaw.png"
 alt="Figure 3. The Fourier power law observed in (top-left) images [10], (top-right) videos [11], (bottom-left) audio [12], and (bottom-right) Cryo-EM derived protein density maps [13]. " />
-<figcaption aria-hidden="true">Figure 2: <em>The Fourier power law</em>
+<figcaption aria-hidden="true">Figure 3: <em>The Fourier power law</em>
 observed in (top-left) images <span class="citation"
 data-cites="krizhevsky2009learning"><a
 href="#ref-krizhevsky2009learning" role="doc-biblioref">[10]</a></span>,
@@ -699,7 +699,7 @@ among the frequencies anymore.</p>
 <p><img src="/spectralauto/Figures/snr_heatmap_equalsnr.png" alt="image" /> <span
 id="fig:equal-snr" data-label="fig:equal-snr"></span></p>
 </div>
-<figcaption>Figure 6: <em>Figure 9. The alternate EqualSNR in Fourier space (dB
+<figcaption><em>Figure 9. The alternate EqualSNR in Fourier space (dB
 scale).</em> Here, all frequencies are corrupted equally fast, achieving
 the same SNR of all frequencies at each timestep. In the forward
 process, SNR is computed as a Monte Carlo estimate of the SNR on CIFAR10
@@ -875,7 +875,7 @@ Consequently, this problematic behaviour does not appear here.</p>
 <figure id="fig:gauss_assumption">
 <img src="/spectralauto/Figures/gauss_assumption_v3.png"
 alt="Figure 10: Fast noising of high frequencies leads to violations of normality in the DDPM reverse process. We plot Monte Carlo estimates of q(\mathbf{y}_t) = \mathbb{E}_{\mathbf{y}_0 \sim q(\mathbf{y}_0)} q(\mathbf{y}_t | \mathbf{y}_0) (and similarly for q(\mathbf{y}_{t-1})) as histograms. " />
-<figcaption aria-hidden="true">Figure 7: Fast noising of high
+<figcaption aria-hidden="true">Figure 10: Fast noising of high
 frequencies leads to violations of normality in the DDPM reverse
 process. We plot Monte Carlo estimates of <span
 class="math inline">\(q(\mathbf{y}_t) = \mathbb{E}_{\mathbf{y}_0 \sim
