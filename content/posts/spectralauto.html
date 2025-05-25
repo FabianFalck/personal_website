@@ -585,7 +585,7 @@ the signal from the noise. Even if it outputs an estimate of the noise
 image <span class="math inline">\(\mathbf{x}_t\)</span> (the signal plus
 the noise), it always <em>learns the signal</em>. After all, a neural
 network can only learn the signal in the data it is given. It cannot
-learn to predict what the next a sample from a random distribution is,
+learn to predict what the next sample from a random distribution is,
 because by definition, that sample is random. Following this logic, I
 argue it is easier for the U-Net to produce its output if <em>the signal
 is large relative to the noise</em>.</p>
@@ -730,7 +730,7 @@ process, SNR is computed as a Monte Carlo estimate of the SNR on CIFAR10
 </figure>
 <p>But what about performance? Can a diffusion model with an EqualSNR
 noising schedule, even though it is not performing ‘approximate spectral
-autoregression’, perform as well as a DDPM diffusion mdoel?
+autoregression’, perform as well as a DDPM diffusion model?
 <strong>Perhaps surprisingly to some, the answer is: Yes, it
 can!</strong></p>
 <p>Table 1 shows (Clean-)FID values of diffusion models trained with
