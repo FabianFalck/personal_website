@@ -3,7 +3,7 @@ title: "Diffusion is not necessarily Spectral Autoregression"
 date: 2025-05-24
 draft: false
 tags: ["blog", "hugo"]
-description: "TODO"
+description: "Diffusion is not necessarily Spectral Autoregression"
 ---
 
 <!DOCTYPE html>
@@ -857,7 +857,7 @@ focuses.</p>
 <p>The intuition is very simple: in DDPM, since we add white noise to
 data which follows a Fourier power law, we not only noise
 high-frequencies first but also <em>faster</em>, in the sense that per
-discrete time increment, the SNR for high-frequency components deceases
+discrete time increment, the SNR for high-frequency components decreases
 faster than for low-frequency components. As a consequence, the
 diffusion model spends less timesteps generating high-frequency
 components. Since the model’s capacity is limited and its weights are
